@@ -1,12 +1,18 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* Base Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-    background: #000;
-    color: #fff;
-    font: 1rem 'Roboto', sans-serif;
+    background-color: #000000; /* Changed to pure black for protest site */
+    color: #FFFFFF; /* Changed to white text for contrast */
+    font-family: 'Roboto', sans-serif;
     line-height: 1.6;
+    margin: 0;
+    padding-bottom: 80px; /* Space for fixed footer */
     min-height: 100vh;
-    padding-bottom: 80px;
     position: relative;
 }
 
@@ -14,209 +20,245 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Typography */
 h1 {
-    color: #E74C3C;
-    font: 700 2.5rem 'Open Sans', sans-serif;
-    margin: 40px 0 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #E74C3C; /* Secondary color (red) for headline impact */
     text-align: center;
+    margin: 40px 0 20px;
 }
 
 .explanatory-text {
-    color: #ccc;
     font-size: 1.2rem;
-    margin: 0 auto 30px;
-    max-width: 800px;
+    line-height: 1.6;
+    color: #CCCCCC; /* Light gray for better readability on black */
     text-align: center;
+    max-width: 800px;
+    margin: 0 auto 30px;
 }
 
 .constitution-excerpt {
-    background: rgba(255,255,255,0.05);
-    border-left: 4px solid #E74C3C;
     font-style: italic;
-    margin: 0 auto 50px;
-    max-width: 800px;
+    background: rgba(255,255,255,0.05); /* Light background for contrast */
     padding: 16px;
+    border-left: 4px solid #E74C3C; /* Secondary color from design doc */
+    color: #FFFFFF;
     text-align: center;
+    max-width: 800px;
+    margin: 0 auto 50px;
 }
 
 /* Image Slider */
 .image-slider {
-    height: 300px;
-    margin: 0 auto 50px;
-    position: relative;
     width: 100%;
-    max-width: 1200px;
+    height: 300px;
+    position: relative;
     overflow: hidden;
+    margin: 0 auto 50px;
 }
 
 .slider-container {
     display: flex;
     position: relative;
     height: 100%;
-    transform: translateX(0);
-    transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
-    will-change: transform;
+    transition: transform 0.5s ease;
 }
 
 .slider-image {
-    flex: 0 0 33.333%;
+    min-width: calc(33.333% - 20px);
     height: 100%;
+    margin: 0 10px;
     object-fit: contain;
-    padding: 0 10px;
-    user-select: none;
-    -webkit-user-drag: none;
+    opacity: 1;
 }
 
+/* Slider controls */
 .slider-controls {
-    bottom: 20px;
-    display: flex;
-    gap: 20px;
-    justify-content: center;
     position: absolute;
+    bottom: 20px;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
     z-index: 2;
 }
 
 .slider-btn {
-    background: rgba(231, 76, 60, 0.7);
-    border: none;
-    border-radius: 50%;
+    background: rgba(231, 76, 60, 0.7); /* Red accent color with transparency */
     color: white;
-    cursor: pointer;
-    font-size: 24px;
-    height: 50px;
-    transition: background 0.2s ease;
+    border: none;
     width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
 .slider-btn:hover {
-    background: rgba(231, 76, 60, 0.9);
+    background: rgba(231, 76, 60, 0.9); /* Darker on hover */
 }
 
-/* Video Grid */
+/* Video Grid - Updated for responsive design per design doc */
 .video-grid {
     display: grid;
-    gap: 24px;
-    grid-template-columns: repeat(3, 1fr);
-    padding-bottom: 100px;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for desktop */
+    gap: 24px; /* Matches design margins */
     width: 100%;
+    padding-bottom: 100px; /* Space for footer */
 }
 
 .video-container {
-    background: #111;
-    border-radius: 4px;
-    overflow: hidden;
-    padding-top: 56.25%;
     position: relative;
-    transition: transform 0.2s ease;
+    overflow: hidden;
+    border-radius: 4px;
+    transition: transform 0.2s ease; /* From design doc */
 }
 
 .video-container:hover {
-    transform: scale(1.05);
+    transform: scale(1.05); /* From design doc */
 }
 
-.video-container iframe,
-.video-thumbnail {
+.video-container iframe {
+    width: 100%;
     height: 100%;
-    left: 0;
+    border: none;
     position: absolute;
     top: 0;
-    width: 100%;
+    left: 0;
+    min-height: 200px;
 }
 
+/* Video Thumbnail Styling */
 .video-thumbnail {
-    background-color: #111;
-    background-position: center;
-    background-size: cover;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
+    position: relative;
     cursor: pointer;
+    background-color: #333333;
+    overflow: hidden;
+    border-radius: 4px;
+    background-size: cover;
+    background-position: center;
 }
 
 .video-thumbnail::before {
-    background: rgba(0,0,0,0.6);
     content: '';
-    height: 100%;
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6); /* Overlay from design doc */
 }
 
 .play-button {
-    background: rgba(231, 76, 60, 0.8);
-    border-radius: 50%;
-    height: 48px;
-    left: 50%;
     position: absolute;
     top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: 48px;
+    width: 48px; /* From design doc */
+    height: 48px; /* From design doc */
+    background-color: rgba(52, 152, 219, 0.8); /* Accent color from design doc */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 2;
 }
 
 .play-button::after {
-    border: 10px solid transparent;
-    border-left: 16px solid #fff;
     content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 16px;
+    border-color: transparent transparent transparent #ffffff;
     margin-left: 3px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-30%, -50%);
 }
 
+/* Fullscreen button */
 .fullscreen-btn {
-    background: rgba(231, 76, 60, 0.7);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
     border: none;
     border-radius: 4px;
-    color: white;
+    padding: 5px 8px;
     cursor: pointer;
     font-size: 16px;
-    padding: 5px 8px;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    transition: background 0.2s;
-    z-index: 10;
+    transition: background 0.2s ease; /* From design doc */
 }
 
 .fullscreen-btn:hover {
-    background: rgba(231, 76, 60, 0.9);
+    background: rgba(0, 0, 0, 0.8);
 }
 
 /* Loading Indicator */
 .loading-indicator {
-    display: none;
-    padding: 20px;
+    position: relative;
     text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    display: none; /* Initially hidden, will be shown when loading */
+    color: #FFFFFF;
 }
 
 .loading-spinner {
-    animation: spin 1s linear infinite;
-    border: 4px solid rgba(255,255,255,0.1);
-    border-left-color: #E74C3C;
-    border-radius: 50%;
-    height: 40px;
-    margin: 0 auto 10px;
+    display: inline-block;
     width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.1); /* White with low opacity */
+    border-left-color: #E74C3C; /* Red accent from our color scheme */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-/* Footer */
+/* Fade in animation for new videos */
+.fade-in {
+    animation: fadeIn 0.3s ease-in; /* From design doc */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Footer styling */
 .footer {
-    align-items: center;
-    background: #111;
+    position: fixed;
     bottom: 0;
-    display: flex;
+    left: 0;
+    right: 0;
     height: 60px;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
     padding: 0 24px;
-    position: fixed;
-    width: 100%;
+    background-color: #111111; /* Slightly lighter than pure black */
+    color: white;
     z-index: 100;
+}
+
+.footer-text {
+    margin: 0;
 }
 
 .signature {
@@ -224,17 +266,54 @@ h1 {
     width: auto;
 }
 
-/* Responsive Design */
+/* Thumbnail loaded class */
+.thumbnail-loaded {
+    background-size: cover;
+}
+
+.thumbnail-fallback {
+    background-color: #222222; /* Dark gray instead of blue */
+}
+
+/* Responsive Design - Updated to match design doc breakpoints */
 @media (max-width: 1024px) {
-    .video-grid { grid-template-columns: repeat(2, 1fr); }
+    .video-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for tablet */
+    }
+    
+    .image-slider {
+        height: 350px;
+    }
 }
 
 @media (max-width: 768px) {
-    body { font-size: 0.875rem; }
-    h1 { font-size: 2rem; }
-    .explanatory-text { font-size: 1rem; }
-    .constitution-excerpt { font-size: 0.875rem; }
-    .video-grid { grid-template-columns: 1fr; }
-    .image-slider { height: 300px; }
-    .footer { padding: 0 16px; }
+    body {
+        font-size: 0.875rem; /* Small text size from design */
+    }
+    
+    h1 {
+        font-size: 2rem; /* h2 size from design */
+        margin: 30px 0 15px;
+    }
+    
+    .explanatory-text {
+        font-size: 1rem;
+    }
+    
+    .constitution-excerpt {
+        font-size: 0.875rem;
+        padding: 12px;
+    }
+    
+    .video-grid {
+        grid-template-columns: 1fr; /* 1 column for mobile */
+    }
+    
+    .image-slider {
+        height: 300px; /* Mobile height from design doc */
+    }
+    
+    .footer {
+        padding: 0 16px;
+    }
 }

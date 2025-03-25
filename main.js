@@ -11,6 +11,57 @@ let currentPage = 0;
 const videosPerPage = 6;
 let loadingMore = false;
 
+// Slider Variables
+let currentPosition = 0;
+const slideDelay = 7000; // 7 seconds between slides
+let slideInterval;
+
+function updateSliderPosition(position, instant = false) {
+    const container = document.querySelector('.slider-container');
+    const slides = document.querySelectorAll('.slider-image');
+    const totalSlides = slides.length;
+    const slideWidth = 100 / 3; // Since we show 3 images at once
+    
+    // When we reach the cloned slides
+    if (position < -(totalSlides - 3) * slideWidth) {
+        currentPosition = 0; // Jump back to start
+        if (instant) {
+            container.style.transition = 'none';
+            container.style.transform = `translateX(${currentPosition}%)`;
+            // Force reflow
+            container.offsetHeight;
+            container.style.transition = 'transform 0.5s ease';
+        } else {
+            container.style.transform = `translateX(${currentPosition}%)`;
+        }
+        return;
+    }
+    
+    // Update position
+    currentPosition = position;
+    container.style.transform = `translateX(${currentPosition}%)`;
+}
+
+function changeSlide(direction) {
+    const slideWidth = 100 / 3;
+    const newPosition = currentPosition - (direction * slideWidth);
+    updateSliderPosition(newPosition);
+
+    // Reset interval when manually changing slides
+    if (slideInterval) {
+        clearInterval(slideInterval);
+        startAutoSlide();
+    }
+}
+
+function startAutoSlide() {
+    slideInterval = setInterval(() => {
+        const slideWidth = 100 / 3;
+        const newPosition = currentPosition - slideWidth;
+        updateSliderPosition(newPosition);
+    }, slideDelay);
+}
+
 // Handle video loading and fullscreen
 function loadVideo(container, videoId) {
     container.innerHTML = `
@@ -63,70 +114,22 @@ function loadMoreVideos() {
     }, 500);
 }
 
-let currentSlide = 0;
-const slideDelay = 7000; // 7 seconds
-let slideInterval;
-let isTransitioning = false;
-
-function changeSlide(direction) {
-    if (isTransitioning) return;
-    
-    const container = document.querySelector('.slider-container');
-    const totalSlides = 3; // We have 3 unique images
-    
-    isTransitioning = true;
-    currentSlide += direction;
-    
-    // Calculate the transform offset (33.333% per slide)
-    const offset = -currentSlide * 33.333;
-    container.style.transition = 'transform 0.5s ease';
-    container.style.transform = `translateX(${offset}%)`;
-    
-    // Reset timer for auto-slide
-    if (slideInterval) {
-        clearInterval(slideInterval);
-        startAutoSlide();
-    }
-    
-    // Handle the seamless loop
-    if (currentSlide >= totalSlides) {
-        setTimeout(() => {
-            container.style.transition = 'none';
-            currentSlide = 0;
-            container.style.transform = 'translateX(0)';
-            setTimeout(() => {
-                container.style.transition = 'transform 0.5s ease';
-                isTransitioning = false;
-            }, 50);
-        }, 500);
-    } else if (currentSlide < 0) {
-        setTimeout(() => {
-            container.style.transition = 'none';
-            currentSlide = totalSlides - 1;
-            container.style.transform = `translateX(-${(totalSlides - 1) * 33.333}%)`;
-            setTimeout(() => {
-                container.style.transition = 'transform 0.5s ease';
-                isTransitioning = false;
-            }, 50);
-        }, 500);
-    } else {
-        setTimeout(() => {
-            isTransitioning = false;
-        }, 500);
-    }
-}
-
-function startAutoSlide() {
-    // Auto-advance to the right every 7 seconds
-    slideInterval = setInterval(() => changeSlide(1), slideDelay);
-}
-
 // Initialize everything on load
 window.onload = () => {
     const container = document.querySelector('.slider-container');
     if (container) {
-        // Initial setup for seamless looping
-        container.style.transform = 'translateX(0)';
+        // Listen for transition end to handle seamless loop
+        container.addEventListener('transitionend', () => {
+            const slides = document.querySelectorAll('.slider-image');
+            const totalSlides = slides.length;
+            const slideWidth = 100 / 3;
+            
+            // If we've reached the cloned slides, instantly jump back to start
+            if (currentPosition <= -(totalSlides - 3) * slideWidth) {
+                updateSliderPosition(0, true);
+            }
+        });
+
         startAutoSlide();
     }
     
