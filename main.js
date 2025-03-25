@@ -11,41 +11,108 @@ let currentPage = 0;
 const videosPerPage = 6;
 let loadingMore = false;
 
-// Slider Variables
-let currentPosition = 0;
-const slideDelay = 7000; // 7 seconds between slides
-let slideInterval;
+// Slider configuration
+const slideDelay = 5000; // 5 seconds between auto-slides
+let slideInterval = null;
 
-function updateSliderPosition(position, instant = false) {
-    const container = document.querySelector('.slider-container');
-    const slides = document.querySelectorAll('.slider-image');
-    const totalSlides = slides.length;
-    const slideWidth = 100 / 3; // Since we show 3 images at once
+// Slider Variables
+let isDragging = false;
+let startX;
+let sliderTranslate = 0;
+let currentIndex = 0;
+
+function startDragging(e) {
+    e.preventDefault(); // Prevent default image drag
+    isDragging = true;
+    startX = e.pageX - sliderTranslate;
+    document.querySelector('.slider-container').classList.add('grabbing');
     
-    // When we reach the cloned slides
-    if (position < -(totalSlides - 3) * slideWidth) {
-        currentPosition = 0; // Jump back to start
-        if (instant) {
-            container.style.transition = 'none';
-            container.style.transform = `translateX(${currentPosition}%)`;
-            // Force reflow
-            container.offsetHeight;
-            container.style.transition = 'transform 0.5s ease';
-        } else {
-            container.style.transform = `translateX(${currentPosition}%)`;
-        }
-        return;
+    // Clear auto-slide when user starts dragging
+    if (slideInterval) {
+        clearInterval(slideInterval);
     }
+}
+
+function handleDrag(e) {
+    if (!isDragging) return;
+    e.preventDefault();
     
-    // Update position
-    currentPosition = position;
-    container.style.transform = `translateX(${currentPosition}%)`;
+    const x = e.pageX;
+    const walk = x - startX;
+    const container = document.querySelector('.slider-container');
+    
+    sliderTranslate = walk;
+    container.style.transform = `translateX(${walk}px)`;
+}
+
+function initSlider() {
+    const container = document.querySelector('.slider-container');
+    if (!container) return;
+
+    // Prevent default drag behavior on the container
+    container.addEventListener('dragstart', e => e.preventDefault());
+
+    // Mouse events
+    container.addEventListener('mousedown', e => {
+        e.preventDefault(); // Prevent image dragging
+        startDragging(e);
+        
+        const handleMouseMove = e => handleDrag(e);
+        const handleMouseUp = () => {
+            stopDragging();
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
+    });
+
+    // Touch events with improved handling
+    container.addEventListener('touchstart', e => {
+        e.preventDefault();
+        startDragging(e.touches[0]);
+        
+        const handleTouchMove = e => {
+            e.preventDefault();
+            handleDrag(e.touches[0]);
+        };
+        
+        const handleTouchEnd = () => {
+            stopDragging();
+            window.removeEventListener('touchmove', handleTouchMove);
+            window.removeEventListener('touchend', handleTouchEnd);
+        };
+
+        window.addEventListener('touchmove', handleTouchMove, { passive: false });
+        window.addEventListener('touchend', handleTouchEnd);
+    }, { passive: false });
+
+    // Initial position and start auto-sliding
+    updateSliderPosition(0);
+    startAutoSlide();
+}
+
+function updateSliderPosition(index) {
+    const container = document.querySelector('.slider-container');
+    if (!container) return;
+    
+    const slideWidth = container.offsetWidth / 3;
+    currentIndex = index;
+    sliderTranslate = -index * slideWidth;
+    
+    container.style.transition = 'transform 0.3s ease';
+    container.style.transform = `translateX(${sliderTranslate}px)`;
 }
 
 function changeSlide(direction) {
-    const slideWidth = 100 / 3;
-    const newPosition = currentPosition - (direction * slideWidth);
-    updateSliderPosition(newPosition);
+    const container = document.querySelector('.slider-container');
+    const slideCount = document.querySelectorAll('.slider-image').length;
+    let newIndex = currentIndex + direction;
+    
+    // Ensure we don't scroll past the bounds
+    newIndex = Math.max(0, Math.min(newIndex, slideCount - 3));
+    updateSliderPosition(newIndex);
 
     // Reset interval when manually changing slides
     if (slideInterval) {
@@ -55,10 +122,19 @@ function changeSlide(direction) {
 }
 
 function startAutoSlide() {
+    if (slideInterval) {
+        clearInterval(slideInterval);
+    }
+    
     slideInterval = setInterval(() => {
-        const slideWidth = 100 / 3;
-        const newPosition = currentPosition - slideWidth;
-        updateSliderPosition(newPosition);
+        const slideCount = document.querySelectorAll('.slider-image').length;
+        let newIndex = currentIndex + 1;
+        
+        if (newIndex > slideCount - 3) {
+            newIndex = 0;
+        }
+        
+        updateSliderPosition(newIndex);
     }, slideDelay);
 }
 
@@ -116,23 +192,7 @@ function loadMoreVideos() {
 
 // Initialize everything on load
 window.onload = () => {
-    const container = document.querySelector('.slider-container');
-    if (container) {
-        // Listen for transition end to handle seamless loop
-        container.addEventListener('transitionend', () => {
-            const slides = document.querySelectorAll('.slider-image');
-            const totalSlides = slides.length;
-            const slideWidth = 100 / 3;
-            
-            // If we've reached the cloned slides, instantly jump back to start
-            if (currentPosition <= -(totalSlides - 3) * slideWidth) {
-                updateSliderPosition(0, true);
-            }
-        });
-
-        startAutoSlide();
-    }
-    
+    initSlider();
     loadMoreVideos();
     
     window.addEventListener('scroll', () => {
