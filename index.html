@@ -25,8 +25,34 @@
         
         // Function to load and play video when thumbnail is clicked
         function loadVideo(container, videoId) {
-            container.innerHTML = `<iframe src="https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0&autoplay=1" 
-                frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+            container.innerHTML = `
+                <button class="fullscreen-btn" onclick="toggleFullscreen(this.parentNode)">⛶</button>
+                <iframe src="https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0&autoplay=1" 
+                    frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            `;
+        }
+        
+        // Function to toggle fullscreen
+        function toggleFullscreen(element) {
+            if (!document.fullscreenElement) {
+                // Enter fullscreen
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.webkitRequestFullscreen) { /* Safari */
+                    element.webkitRequestFullscreen();
+                } else if (element.msRequestFullscreen) { /* IE11 */
+                    element.msRequestFullscreen();
+                }
+            } else {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) { /* Safari */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE11 */
+                    document.msExitFullscreen();
+                }
+            }
         }
         
         // Load more videos as user scrolls
@@ -166,12 +192,9 @@
         </div>
     </div>
     
-    <!-- Fixed footer at the bottom -->
-    <footer class="fixed-footer">
-        <div class="footer-content">
-            <img src="images/ataturk-signature.png" alt="Atatürk İmzası" class="signature">
-            <p class="footer-text">Made with ❤️</p>
-        </div>
-    </footer>
+    <div class="footer">
+        <img src="images/ataturk-signature.png" alt="Atatürk İmzası" class="signature">
+        <p class="footer-text">Made with ❤️</p>
+    </div>
 </body>
 </html>
