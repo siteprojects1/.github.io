@@ -37,6 +37,10 @@ function changeSlide(direction) {
     const slideCount = document.querySelectorAll('.slider-image').length;
     let newIndex = currentIndex + direction;
     
+    // Set sliding flag to prevent image opening during slide action
+    window.isSliding = true;
+    setTimeout(() => { window.isSliding = false; }, 300);
+    
     // Ensure we don't scroll past the bounds
     newIndex = Math.max(0, Math.min(newIndex, slideCount - 3));
     updateSliderPosition(newIndex);
@@ -46,6 +50,7 @@ function changeSlide(direction) {
 window.onload = () => {
     initSlider();
     loadMoreVideos();
+    setupImageClickHandlers();
     
     window.addEventListener('scroll', () => {
         const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
@@ -54,6 +59,28 @@ window.onload = () => {
         }
     });
 }
+
+// Set up click handlers for all slider images
+function setupImageClickHandlers() {
+    const sliderImages = document.querySelectorAll('.slider-image');
+    
+    sliderImages.forEach(image => {
+        // Add pointer cursor style
+        image.style.cursor = 'pointer';
+        
+        // Add click event to open image in new tab
+        image.addEventListener('click', (event) => {
+            // If user is dragging/sliding, don't open in new tab
+            if (!window.isSliding) {
+                event.stopPropagation();
+                window.open(image.src, '_blank');
+            }
+        });
+    });
+}
+
+// Track if user is sliding the image carousel
+window.isSliding = false;
 
 // Handle video loading and fullscreen
 function loadVideo(container, videoId) {
@@ -68,12 +95,15 @@ function loadVideo(container, videoId) {
     wrapper.style.width = '100%';
     wrapper.style.height = '100%';
     
+    // Add muted=1 to allow autoplay on mobile devices
     wrapper.innerHTML = `
         <button class="fullscreen-btn" onclick="document.fullscreenElement ? document.exitFullscreen() : this.parentNode.requestFullscreen()">⛶</button>
-        <iframe src="https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0&autoplay=1" 
+        <iframe src="https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0&autoplay=1&muted=1" 
             frameborder="0" 
             allow="autoplay; fullscreen; picture-in-picture" 
             allowfullscreen
+            playsinline
+            webkit-playsinline
             style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></iframe>
     `;
     
