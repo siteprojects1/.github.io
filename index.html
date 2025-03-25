@@ -5,53 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zulme Tanık Ol!</title>
     <meta name="description" content="19 Mart direnişi ve olayları hakkında video ve görsel arşivi">
-    <!-- Fonts from design document -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="refactored_styles.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Zulme Tanık Ol!</h1>
-            <p class="explanatory-text">
-                19 Mart direnişi, Ekrem İmamoğlu'nun hukuksuzca tutuklanmasının ardından başladı. Polis günlerdir, suçu sadece haklarımızı savunmak olan gençlere acımasızca müdahale ediyor. Plastik mermilerle, coplarla, tomalarla ve biber gazıyla Türk bayraklı evlatlarımıza, orantısız güç uyguluyor.
-            </p>
+            <p class="explanatory-text">19 Mart direnişi, Ekrem İmamoğlu'nun hukuksuzca tutuklanmasının ardından başladı. Polis günlerdir, suçu sadece haklarımızı savunmak olan gençlere acımasızca müdahale ediyor. Plastik mermilerle, coplarla, tomalarla ve biber gazıyla Türk bayraklı evlatlarımıza, orantısız güç uyguluyor.</p>
             <div class="constitution-excerpt">
-                <p>
-                    "Türkiye Cumhuriyeti Anayasası Madde 34 - Herkes, önceden izin almadan, silahsız ve saldırısız toplantı ve gösteri yürüyüşü düzenleme hakkına sahiptir."
-                </p>
+                <p>Türkiye Cumhuriyeti Anayasası Madde 34 - Herkes, önceden izin almadan, silahsız ve saldırısız toplantı ve gösteri yürüyüşü düzenleme hakkına sahiptir.</p>
             </div>
         </header>
 
-        <!-- Image Slider - Above Videos -->
-        <section class="image-slider">
+        <div class="image-slider">
             <div class="slider-container">
-                <div class="slider-image active" data-fullimage="images/image1.jpg.png"></div>
-                <div class="slider-image" data-fullimage="images/image1.jpg.png"></div>
-                <div class="slider-image" data-fullimage="images/image1.jpg.png"></div>
-                <div class="slider-image" data-fullimage="images/image1.jpg.png"></div>
-                <div class="slider-image" data-fullimage="images/image1.jpg.png"></div>
+                <!-- Main images -->
+                <img src="images/image1.png" class="slider-image" alt="Protesto Görüntüsü 1">
+                <img src="images/image2.jpg" class="slider-image" alt="Protesto Görüntüsü 2">
+                <img src="images/image3.jpg" class="slider-image" alt="Protesto Görüntüsü 3">
+                <!-- Clone first two images at the end for seamless loop -->
+                <img src="images/image1.png" class="slider-image" alt="Protesto Görüntüsü 1">
+                <img src="images/image2.jpg" class="slider-image" alt="Protesto Görüntüsü 2">
+                <img src="images/image3.jpg" class="slider-image" alt="Protesto Görüntüsü 3">
             </div>
             <div class="slider-controls">
-                <button onclick="changeSlide(-1)" class="slider-btn prev-btn">❮</button>
-                <button onclick="changeSlide(1)" class="slider-btn next-btn">❯</button>
+                <button onclick="changeSlide(-1)" class="slider-btn">❮</button>
+                <button onclick="changeSlide(1)" class="slider-btn">❯</button>
             </div>
-        </section>
-
-        <!-- Lightbox for image popup -->
-        <div id="image-lightbox" class="lightbox">
-            <span class="close-lightbox">&times;</span>
-            <img class="lightbox-content" id="fullsize-image">
         </div>
 
-        <!-- Videos container for infinite scrolling -->
-        <section id="video-grid" class="video-grid">
-            <!-- Videos will be added here dynamically -->
-        </section>
-
-        <!-- Loading indicator -->
+        <div id="video-grid" class="video-grid"></div>
         <div id="loading-indicator" class="loading-indicator">
             <div class="loading-spinner"></div>
             <p>Daha fazla video yükleniyor...</p>
@@ -63,7 +47,6 @@
         <img src="images/ataturk-signature.png" alt="Atatürk İmzası" class="signature">
     </footer>
 
-    <!-- External JavaScript file -->
     <script src="refactored_main.js"></script>
 </body>
 </html>
