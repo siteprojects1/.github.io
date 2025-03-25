@@ -1,4 +1,4 @@
-// Video data - add all your video IDs here
+// Video data - all your video IDs
 const allVideos = [
     '1068978779', '1068979046', '1068979098', '1068979142', 
     '1068979205', '1068979244', '1068978881', '1068978779', 
@@ -13,8 +13,48 @@ let currentPage = 0;
 const videosPerPage = 6;
 let loadingMore = false;
 
+// Function to open image in a new popup window
+function openImagePopup(imageSrc) {
+    // Set the window features for the popup
+    const windowFeatures = 'width=800,height=600,resizable=yes,scrollbars=yes,status=yes';
+    
+    // Open the popup window with the image
+    window.open(imageSrc, 'imagePopup', windowFeatures);
+}
+
 // Function to load and play video when thumbnail is clicked
 function loadVideo(container, videoId) {
+    // First try to get the video metadata from Vimeo to determine proper aspect ratio
+    fetch(`https://vimeo.com/api/v2/video/${videoId}.json`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data[0]) {
+                const { width, height } = data[0];
+                // Calculate aspect ratio (or default to 16:9)
+                const aspectRatio = height && width ? (height / width * 100) : 56.25;
+                
+                // Apply the proper aspect ratio to the container
+                container.style.paddingTop = `${aspectRatio}%`;
+                
+                // Now insert the iframe with the video
+                container.innerHTML = `
+                    <button class="fullscreen-btn" onclick="toggleFullscreen(this.parentNode)">⛶</button>
+                    <iframe src="https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0&autoplay=1" 
+                        frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                `;
+            } else {
+                // Fallback to default aspect ratio if metadata retrieval fails
+                defaultLoadVideo(container, videoId);
+            }
+        })
+        .catch(() => {
+            // Fallback if fetch fails
+            defaultLoadVideo(container, videoId);
+        });
+}
+
+// Fallback function for video loading
+function defaultLoadVideo(container, videoId) {
     container.innerHTML = `
         <button class="fullscreen-btn" onclick="toggleFullscreen(this.parentNode)">⛶</button>
         <iframe src="https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0&autoplay=1" 
@@ -116,8 +156,48 @@ function changeSlide(direction) {
 window.onload = function() {
     // Start image slider
     const slides = document.querySelectorAll('.slider-image');
+    
     if (slides.length > 0) {
+        // Set initial slide
         slides[0].classList.add('active');
+        
+        // Set background images and setup action buttons for each slide
+        slides.forEach(slide => {
+            const imageUrl = slide.getAttribute('data-fullimage');
+            slide.style.backgroundImage = `url(${imageUrl})`;
+            
+            // Create action buttons for popup and new tab
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'image-actions';
+            
+            // Create popup button
+            const popupBtn = document.createElement('button');
+            popupBtn.className = 'action-btn popup-btn';
+            popupBtn.title = 'Yeni pencerede aç';
+            popupBtn.innerHTML = '↗️';
+            popupBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent slide click event
+                openImagePopup(imageUrl);
+            });
+            
+            // Create new tab button
+            const newTabLink = document.createElement('a');
+            newTabLink.className = 'action-btn newtab-btn';
+            newTabLink.href = imageUrl;
+            newTabLink.target = '_blank';
+            newTabLink.title = 'Yeni sekmede aç';
+            newTabLink.innerHTML = '📄';
+            newTabLink.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent slide click event
+            });
+            
+            // Add buttons to actions div
+            actionsDiv.appendChild(popupBtn);
+            actionsDiv.appendChild(newTabLink);
+            
+            // Add actions div to slide
+            slide.appendChild(actionsDiv);
+        });
         
         // Auto-advance slider every 5 seconds
         setInterval(function() {

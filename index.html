@@ -26,38 +26,44 @@
         </header>
 
         <!-- Image Slider - Above Videos -->
-        <section class="image-slider" aria-label="Görsel Slaytı">
+        <section class="image-slider">
             <div class="slider-container">
-                <div class="slider-image active" style="background-image: url('images/image1.jpg.png');" aria-label="Fotoğraf 1"></div>
-                <div class="slider-image" style="background-image: url('images/image1.jpg.png');" aria-label="Fotoğraf 2"></div>
-                <div class="slider-image" style="background-image: url('images/image1.jpg.png');" aria-label="Fotoğraf 3"></div>
-                <div class="slider-image" style="background-image: url('images/image1.jpg.png');" aria-label="Fotoğraf 4"></div>
-                <div class="slider-image" style="background-image: url('images/image1.jpg.png');" aria-label="Fotoğraf 5"></div>
+                <div class="slider-image active" data-fullimage="images/image1.jpg.png"></div>
+                <div class="slider-image" data-fullimage="images/image1.jpg.png"></div>
+                <div class="slider-image" data-fullimage="images/image1.jpg.png"></div>
+                <div class="slider-image" data-fullimage="images/image1.jpg.png"></div>
+                <div class="slider-image" data-fullimage="images/image1.jpg.png"></div>
             </div>
             <div class="slider-controls">
-                <button onclick="changeSlide(-1)" class="slider-btn prev-btn" aria-label="Önceki fotoğraf">❮</button>
-                <button onclick="changeSlide(1)" class="slider-btn next-btn" aria-label="Sonraki fotoğraf">❯</button>
+                <button onclick="changeSlide(-1)" class="slider-btn prev-btn">❮</button>
+                <button onclick="changeSlide(1)" class="slider-btn next-btn">❯</button>
             </div>
         </section>
 
+        <!-- Lightbox for image popup -->
+        <div id="image-lightbox" class="lightbox">
+            <span class="close-lightbox">&times;</span>
+            <img class="lightbox-content" id="fullsize-image">
+        </div>
+
         <!-- Videos container for infinite scrolling -->
-        <section id="video-grid" class="video-grid" aria-label="Video Galerisi">
+        <section id="video-grid" class="video-grid">
             <!-- Videos will be added here dynamically -->
         </section>
 
         <!-- Loading indicator -->
-        <div id="loading-indicator" class="loading-indicator" aria-live="polite">
-            <div class="loading-spinner" aria-hidden="true"></div>
+        <div id="loading-indicator" class="loading-indicator">
+            <div class="loading-spinner"></div>
             <p>Daha fazla video yükleniyor...</p>
         </div>
     </div>
     
     <footer class="footer">
-        <img src="images/ataturk-signature.png" alt="Atatürk İmzası" class="signature">
         <p class="footer-text">Made with ❤️</p>
+        <img src="images/ataturk-signature.png" alt="Atatürk İmzası" class="signature">
     </footer>
 
     <!-- External JavaScript file -->
-    <script src="main.js"></script>
+    <script src="refactored_main.js"></script>
 </body>
 </html>
