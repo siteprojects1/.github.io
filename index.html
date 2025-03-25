@@ -7,6 +7,118 @@
     <link rel="stylesheet" href="styles.css">
     <meta name="description" content="Zulme Tanık Ol!">
     <!-- No analytics or tracking scripts -->
+    <script>
+        // Video data - add all your video IDs here
+        const allVideos = [
+            '1068978779', '1068979046', '1068979098', '1068979142', 
+            '1068979205', '1068979244', '1068978881', '1068978779', 
+            '1068978836'
+            // Add more video IDs as needed
+        ];
+        
+        let currentPage = 0;
+        const videosPerPage = 6;
+        let loadingMore = false;
+        
+        // Function to load and play video when thumbnail is clicked
+        function loadVideo(container, videoId) {
+            container.innerHTML = `<iframe src="https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0&autoplay=1" 
+                frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+        }
+        
+        // Load more videos as user scrolls
+        function loadMoreVideos() {
+            if (loadingMore) return;
+            
+            const startIndex = currentPage * videosPerPage;
+            
+            // Check if we've loaded all videos
+            if (startIndex >= allVideos.length) {
+                document.getElementById('loading-indicator').style.display = 'none';
+                return;
+            }
+            
+            loadingMore = true;
+            document.getElementById('loading-indicator').style.display = 'block';
+            
+            const endIndex = Math.min(startIndex + videosPerPage, allVideos.length);
+            const videoGrid = document.getElementById('video-grid');
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const videoId = allVideos[i];
+                const videoContainer = document.createElement('div');
+                videoContainer.className = 'video-container fade-in';
+                
+                videoContainer.innerHTML = `
+                    <div class="video-thumbnail" data-vimeo-id="${videoId}" onclick="loadVideo(this.parentNode, '${videoId}')">
+                        <div class="play-button"></div>
+                    </div>
+                `;
+                
+                videoGrid.appendChild(videoContainer);
+                
+                // Load thumbnail from Vimeo
+                fetch(`https://vimeo.com/api/v2/video/${videoId}.json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data[0] && data[0].thumbnail_large) {
+                            const thumbnail = videoContainer.querySelector('.video-thumbnail');
+                            thumbnail.style.backgroundImage = `url(${data[0].thumbnail_large})`;
+                            thumbnail.classList.add('thumbnail-loaded');
+                        }
+                    })
+                    .catch(() => {
+                        // Fallback in case API fails
+                        const thumbnail = videoContainer.querySelector('.video-thumbnail');
+                        thumbnail.classList.add('thumbnail-fallback');
+                    });
+            }
+            
+            currentPage++;
+            setTimeout(() => {
+                loadingMore = false;
+            }, 500); // Add a small delay to prevent multiple rapid loads
+        }
+        
+        // Initialize slider for images
+        let currentSlide = 0;
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.slider-image');
+            
+            slides[currentSlide].classList.remove('active');
+            
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            
+            slides[currentSlide].classList.add('active');
+        }
+        
+        // Setup event listeners when page loads
+        window.onload = function() {
+            // Start image slider
+            const slides = document.querySelectorAll('.slider-image');
+            if (slides.length > 0) {
+                slides[0].classList.add('active');
+                
+                // Auto-advance slider every 5 seconds
+                setInterval(function() {
+                    changeSlide(1);
+                }, 5000);
+            }
+            
+            // Load initial videos
+            loadMoreVideos();
+            
+            // Setup infinite scroll
+            window.addEventListener('scroll', function() {
+                const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+                
+                // Check if user has scrolled near the bottom
+                if (!loadingMore && scrollTop + clientHeight >= scrollHeight - 500) {
+                    loadMoreVideos();
+                }
+            });
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -23,68 +135,41 @@
             </div>
         </header>
 
-        <section class="video-grid">
-            <!-- Updated Vimeo embed code format with additional parameters -->
-            <div class="video-container">
-                <iframe src="https://player.vimeo.com/video/1068978779?title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        <!-- Image Slider - Above Videos -->
+        <section class="image-slider">
+            <div class="slider-container">
+                <div class="slider-image active" style="background-image: url('images/featured-image.jpg');"></div>
+                <div class="slider-image" style="background-image: url('images/image1.jpg');"></div>
+                <div class="slider-image" style="background-image: url('images/image2.jpg');"></div>
+                <div class="slider-image" style="background-image: url('images/image3.jpg');"></div>
+                <div class="slider-image" style="background-image: url('images/image4.jpg');"></div>
+                <div class="slider-image" style="background-image: url('images/image5.jpg');"></div>
+                <div class="slider-image" style="background-image: url('images/image6.jpg');"></div>
             </div>
-            <div class="video-container">
-                <iframe src="https://player.vimeo.com/video/1068979046?title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="video-container">
-                <iframe src="https://player.vimeo.com/video/1068979098?title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="video-container">
-                <iframe src="https://player.vimeo.com/video/1068979142?title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="video-container">
-                <iframe src="https://player.vimeo.com/video/1068979205?title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="video-container">
-                <iframe src="https://player.vimeo.com/video/1068979244?title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <!-- Added new video containers for remaining videos -->
-            <div class="video-container">
-                <iframe src="https://player.vimeo.com/video/1068978881?title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="video-container">
-                <iframe src="https://player.vimeo.com/video/1068978779?title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="video-container">
-                <iframe src="https://player.vimeo.com/video/1068978836?title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            <div class="slider-controls">
+                <button onclick="changeSlide(-1)" class="slider-btn prev-btn">❮</button>
+                <button onclick="changeSlide(1)" class="slider-btn next-btn">❯</button>
             </div>
         </section>
 
-        <!-- Single centered image section -->
-        <section class="featured-image">
-            <img src="images/featured-image.jpg" alt="Öne Çıkan Görsel" class="main-image">
+        <!-- Videos container for infinite scrolling -->
+        <section id="video-grid" class="video-grid">
+            <!-- Videos will be added here dynamically -->
         </section>
 
-        <!-- Additional images grid -->
-        <section class="images-grid">
-            <div class="image-container">
-                <img src="images/image1.jpg" alt="Görsel 1">
-            </div>
-            <div class="image-container">
-                <img src="images/image2.jpg" alt="Görsel 2">
-            </div>
-            <div class="image-container">
-                <img src="images/image3.jpg" alt="Görsel 3">
-            </div>
-            <div class="image-container">
-                <img src="images/image4.jpg" alt="Görsel 4">
-            </div>
-            <div class="image-container">
-                <img src="images/image5.jpg" alt="Görsel 5">
-            </div>
-            <div class="image-container">
-                <img src="images/image6.jpg" alt="Görsel 6">
-            </div>
-        </section>
-
-        <footer>
-            <img src="images/ataturk-signature.png" alt="Atatürk İmzası" class="signature">
-        </footer>
+        <!-- Loading indicator -->
+        <div id="loading-indicator" class="loading-indicator">
+            <div class="loading-spinner"></div>
+            <p>Daha fazla video yükleniyor...</p>
+        </div>
     </div>
+    
+    <!-- Fixed footer at the bottom -->
+    <footer class="fixed-footer">
+        <div class="footer-content">
+            <img src="images/ataturk-signature.png" alt="Atatürk İmzası" class="signature">
+            <p class="footer-text">Made with ❤️</p>
+        </div>
+    </footer>
 </body>
 </html>
