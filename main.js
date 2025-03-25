@@ -11,86 +11,15 @@ let currentPage = 0;
 const videosPerPage = 6;
 let loadingMore = false;
 
-// Slider configuration
-const slideDelay = 5000; // 5 seconds between auto-slides
-let slideInterval = null;
-
 // Slider Variables
-let isDragging = false;
-let startX;
-let sliderTranslate = 0;
 let currentIndex = 0;
-
-function startDragging(e) {
-    e.preventDefault(); // Prevent default image drag
-    isDragging = true;
-    startX = e.pageX - sliderTranslate;
-    document.querySelector('.slider-container').classList.add('grabbing');
-    
-    // Clear auto-slide when user starts dragging
-    if (slideInterval) {
-        clearInterval(slideInterval);
-    }
-}
-
-function handleDrag(e) {
-    if (!isDragging) return;
-    e.preventDefault();
-    
-    const x = e.pageX;
-    const walk = x - startX;
-    const container = document.querySelector('.slider-container');
-    
-    sliderTranslate = walk;
-    container.style.transform = `translateX(${walk}px)`;
-}
 
 function initSlider() {
     const container = document.querySelector('.slider-container');
     if (!container) return;
-
-    // Prevent default drag behavior on the container
-    container.addEventListener('dragstart', e => e.preventDefault());
-
-    // Mouse events
-    container.addEventListener('mousedown', e => {
-        e.preventDefault(); // Prevent image dragging
-        startDragging(e);
-        
-        const handleMouseMove = e => handleDrag(e);
-        const handleMouseUp = () => {
-            stopDragging();
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('mouseup', handleMouseUp);
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('mouseup', handleMouseUp);
-    });
-
-    // Touch events with improved handling
-    container.addEventListener('touchstart', e => {
-        e.preventDefault();
-        startDragging(e.touches[0]);
-        
-        const handleTouchMove = e => {
-            e.preventDefault();
-            handleDrag(e.touches[0]);
-        };
-        
-        const handleTouchEnd = () => {
-            stopDragging();
-            window.removeEventListener('touchmove', handleTouchMove);
-            window.removeEventListener('touchend', handleTouchEnd);
-        };
-
-        window.addEventListener('touchmove', handleTouchMove, { passive: false });
-        window.addEventListener('touchend', handleTouchEnd);
-    }, { passive: false });
-
-    // Initial position and start auto-sliding
+    
+    // Initial position
     updateSliderPosition(0);
-    startAutoSlide();
 }
 
 function updateSliderPosition(index) {
@@ -99,10 +28,8 @@ function updateSliderPosition(index) {
     
     const slideWidth = container.offsetWidth / 3;
     currentIndex = index;
-    sliderTranslate = -index * slideWidth;
     
-    container.style.transition = 'transform 0.3s ease';
-    container.style.transform = `translateX(${sliderTranslate}px)`;
+    container.style.transform = `translateX(${-index * slideWidth}px)`;
 }
 
 function changeSlide(direction) {
@@ -113,38 +40,44 @@ function changeSlide(direction) {
     // Ensure we don't scroll past the bounds
     newIndex = Math.max(0, Math.min(newIndex, slideCount - 3));
     updateSliderPosition(newIndex);
-
-    // Reset interval when manually changing slides
-    if (slideInterval) {
-        clearInterval(slideInterval);
-        startAutoSlide();
-    }
 }
 
-function startAutoSlide() {
-    if (slideInterval) {
-        clearInterval(slideInterval);
-    }
+// Initialize everything on load
+window.onload = () => {
+    initSlider();
+    loadMoreVideos();
     
-    slideInterval = setInterval(() => {
-        const slideCount = document.querySelectorAll('.slider-image').length;
-        let newIndex = currentIndex + 1;
-        
-        if (newIndex > slideCount - 3) {
-            newIndex = 0;
+    window.addEventListener('scroll', () => {
+        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        if (!loadingMore && scrollTop + clientHeight >= scrollHeight - 500) {
+            loadMoreVideos();
         }
-        
-        updateSliderPosition(newIndex);
-    }, slideDelay);
+    });
 }
 
 // Handle video loading and fullscreen
 function loadVideo(container, videoId) {
-    container.innerHTML = `
+    // Remove any existing content
+    container.innerHTML = '';
+    
+    // Create a new wrapper div to maintain aspect ratio
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'absolute';
+    wrapper.style.top = '0';
+    wrapper.style.left = '0';
+    wrapper.style.width = '100%';
+    wrapper.style.height = '100%';
+    
+    wrapper.innerHTML = `
         <button class="fullscreen-btn" onclick="document.fullscreenElement ? document.exitFullscreen() : this.parentNode.requestFullscreen()">⛶</button>
         <iframe src="https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0&autoplay=1" 
-            frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            frameborder="0" 
+            allow="autoplay; fullscreen; picture-in-picture" 
+            allowfullscreen
+            style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></iframe>
     `;
+    
+    container.appendChild(wrapper);
 }
 
 // Load more videos with thumbnails
@@ -188,17 +121,4 @@ function loadMoreVideos() {
         loadingMore = false;
         document.getElementById('loading-indicator').style.display = 'none';
     }, 500);
-}
-
-// Initialize everything on load
-window.onload = () => {
-    initSlider();
-    loadMoreVideos();
-    
-    window.addEventListener('scroll', () => {
-        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-        if (!loadingMore && scrollTop + clientHeight >= scrollHeight - 500) {
-            loadMoreVideos();
-        }
-    });
 }

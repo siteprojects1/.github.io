@@ -61,30 +61,23 @@ h1 {
     position: relative;
     overflow: hidden;
     margin: 0 auto 50px;
-    touch-action: pan-y pinch-zoom;
-    user-select: none;
-    height: 500px; /* Increased from 350px to match design */
-}
-
-.slider-image {
-    min-width: calc(33.333% - 20px);
-    width: calc(33.333% - 20px);
-    height: 400px;
-    margin: 0 10px;
-    object-fit: contain; /* Changed from cover to contain */
-    border-radius: 4px;
-    pointer-events: none; /* Prevent image drag interference */
-    user-select: none;
+    height: 500px;
 }
 
 .slider-container {
     display: flex;
     position: relative;
     transition: transform 0.3s ease;
-    height: 400px;
-    cursor: grab;
-    background: #111111; /* Dark background for image containment */
-    align-items: center; /* Center images vertically */
+    height: 100%;
+}
+
+.slider-image {
+    min-width: calc(33.333% - 20px);
+    width: calc(33.333% - 20px);
+    height: 100%;
+    margin: 0 10px;
+    object-fit: contain;
+    border-radius: 4px;
 }
 
 /* Slider controls */
@@ -127,11 +120,12 @@ h1 {
     position: relative;
     overflow: hidden;
     border-radius: 4px;
-    transition: transform 0.2s ease; /* From design doc */
+    transition: transform 0.2s ease;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
 }
 
 .video-container:hover {
-    transform: scale(1.05); /* From design doc */
+    transform: scale(1.05);
 }
 
 .video-container iframe {
@@ -141,18 +135,14 @@ h1 {
     position: absolute;
     top: 0;
     left: 0;
-    min-height: 200px;
 }
 
-/* Video Thumbnail Styling */
 .video-thumbnail {
     width: 100%;
-    padding-top: 56.25%; /* 16:9 aspect ratio */
-    position: relative;
-    cursor: pointer;
-    background-color: #333333;
-    overflow: hidden;
-    border-radius: 4px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
     background-size: cover;
     background-position: center;
 }
