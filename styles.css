@@ -250,10 +250,13 @@ h1 {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 50px;
+    min-height: 50px;
     display: flex;
     align-items: center;
-    padding: 0 32px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 8px 16px;
     background-color: #111111;
     color: white;
     z-index: 100;
@@ -262,8 +265,6 @@ h1 {
 .signature {
     height: 35px;
     width: auto;
-    padding-right: 20px;
-    flex: 0 0 auto; /* Prevent flex growth/shrink */
     cursor: pointer;
     transition: transform 0.2s ease;
 }
@@ -277,9 +278,7 @@ h1 {
     text-decoration: none;
     font-weight: bold;
     transition: color 0.2s ease;
-    position: absolute; /* Position absolutely to center regardless of other elements */
-    left: 50%;
-    transform: translateX(-50%); /* Center the element */
+    margin-left: 140px; /* Increased margin to move further right */
 }
 
 .boycott-link:hover {
@@ -289,9 +288,7 @@ h1 {
 .footer-text {
     margin: 0;
     font-size: 0.875rem;
-    padding-left: 20px;
     white-space: nowrap;
-    margin-left: auto; /* Push to the right */
 }
 
 /* Modal Styles */
@@ -379,6 +376,7 @@ h1 {
 @media (max-width: 768px) {
     body {
         font-size: 0.875rem; /* Small text size from design */
+        padding-bottom: 100px; /* Increase padding to account for potentially taller footer */
     }
     
     h1 {
@@ -406,6 +404,17 @@ h1 {
     }
     
     .footer {
-        padding: 0 16px;
+        justify-content: center;
+        text-align: center;
+        padding: 8px;
+    }
+    
+    .signature {
+        height: 30px; /* Slightly smaller on mobile */
+    }
+    
+    .footer-text {
+        order: 3; /* Move copyright text to the bottom on mobile */
+        width: 100%;
     }
 }
