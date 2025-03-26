@@ -147,28 +147,35 @@ h1 {
 /* Slider controls */
 .slider-controls {
     position: absolute;
-    bottom: 20px;
+    top: 0;
+    bottom: 0;
     width: 100%;
+    height: 100%;
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    justify-content: space-between;
+    pointer-events: none; /* This allows clicks to pass through to elements beneath */
     z-index: 2;
 }
 
 .slider-btn {
-    background: rgba(231, 76, 60, 0.7); /* Red accent color with transparency */
+    background: rgba(231, 76, 60, 0.4); /* More transparent buttons */
     color: white;
     border: none;
-    width: 50px;
-    height: 50px;
+    width: 60px; /* Increased from 50px */
+    height: 60px; /* Increased from 50px */
     border-radius: 50%;
-    font-size: 24px;
+    font-size: 28px; /* Increased from 24px */
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
+    pointer-events: auto; /* Make buttons clickable */
+    align-self: center; /* Vertically center the buttons */
+    margin: 0 60px; /* Increased from 20px to move closer to middle */
+    opacity: 0.6;
 }
 
 .slider-btn:hover {
-    background: rgba(231, 76, 60, 0.9); /* Darker on hover */
+    background: rgba(231, 76, 60, 0.8);
+    opacity: 1;
 }
 
 /* Video Grid - Updated for responsive design per design doc */
@@ -546,5 +553,10 @@ h1 {
         padding: 5px 10px;
         margin-top: -20px;
         margin-bottom: 20px;
+    }
+    
+    header {
+        background-size: 150%; /* Zoom out the background image on mobile */
+        background-position: center top; /* Position from the top to ensure important content is visible */
     }
 }
