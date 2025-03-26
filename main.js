@@ -1,10 +1,14 @@
 const allVideos = [
+    '1069055189', '1069710654', '1069710703', '1069714903',
+    '1069720118', '1069720051', '1069086739', '1069719595',
+    '1069719749', '1069719692', '1069719657', '1069719628', 
     '1068978779', '1068979046', '1068979098', '1068979142', 
-    '1068979205', '1068979244', '1068978881', '1068978779', 
+    '1069719983', '1069719932', '1069719846', '1069719790',
+    '1068979205', '1068979244', '1068978881', '1069713151', 
     '1068978836', '1069052048', '1069052091', '1069052080',
-    '1069052068', '1069052057', '1069055189', '1069055176',
+    '1069052068', '1069052057', '1069720017', '1069055176',
     '1069055162', '1069055149', '1069055138', '1069055126',
-    '1069055115',
+    '1069055115', '1069726380', '1069726346'
 ];
 
 let currentPage = 0;
@@ -152,3 +156,28 @@ function loadMoreVideos() {
         document.getElementById('loading-indicator').style.display = 'none';
     }, 500);
 }
+
+// Modal functionality for Gençliğe Hitabe
+document.querySelector('.signature').addEventListener('click', () => {
+    document.getElementById('hitabeModal').style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+});
+
+document.querySelector('.close-modal').addEventListener('click', closeModal);
+document.getElementById('hitabeModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('hitabeModal')) {
+        closeModal();
+    }
+});
+
+function closeModal() {
+    document.getElementById('hitabeModal').style.display = 'none';
+    document.body.style.overflow = ''; // Restore scrolling
+}
+
+// Close modal with escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.getElementById('hitabeModal').style.display === 'block') {
+        closeModal();
+    }
+});
