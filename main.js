@@ -1,4 +1,5 @@
 const allVideos = [
+    '1069778933', '1069778911', '1069778877', '1069780195',
     '1069055189', '1069710654', '1069710703', '1069714903',
     '1069720118', '1069720051', '1069086739', '1069719595',
     '1069719749', '1069719692', '1069719657', '1069719628', 
@@ -55,6 +56,7 @@ window.onload = () => {
     initSlider();
     loadMoreVideos();
     setupImageClickHandlers();
+    setupScrollButton();
     
     window.addEventListener('scroll', () => {
         const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
@@ -179,5 +181,88 @@ function closeModal() {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && document.getElementById('hitabeModal').style.display === 'block') {
         closeModal();
+    }
+});
+
+// Setup the scroll button functionality
+function setupScrollButton() {
+    const scrollButton = document.getElementById('scroll-to-videos');
+    if (scrollButton) {
+        scrollButton.addEventListener('click', () => {
+            const videoGrid = document.getElementById('video-grid');
+            if (videoGrid) {
+                // Use a smoother scroll with longer duration
+                smoothScrollTo(videoGrid, 1000);
+            }
+        });
+    }
+}
+
+// Custom smooth scroll function with configurable duration
+function smoothScrollTo(element, duration) {
+    const targetPosition = element.getBoundingClientRect().top + window.pageYOffset;
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    let startTime = null;
+    
+    function animation(currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const scrollY = ease(timeElapsed, startPosition, distance, duration);
+        window.scrollTo(0, scrollY);
+        if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
+    
+    // Easing function for smoother acceleration/deceleration
+    function ease(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+    }
+    
+    requestAnimationFrame(animation);
+}
+
+// Share button functionality
+document.getElementById('share-button').addEventListener('click', async () => {
+    const shareData = {
+        title: 'Zulme Tanık Ol!',
+        text: '19 Mart direnişi ve olayları hakkında video ve görsel arşivi',
+        url: window.location.href
+    };
+
+    try {
+        // Check if Web Share API is available
+        if (navigator.share) {
+            await navigator.share(shareData);
+        } else {
+            // Fallback for browsers that don't support Web Share API
+            // Copy the URL to clipboard
+            await navigator.clipboard.writeText(window.location.href);
+            
+            // Create and show a temporary notification
+            const notification = document.createElement('div');
+            notification.textContent = 'Bağlantı kopyalandı!';
+            notification.style.position = 'fixed';
+            notification.style.bottom = '130px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            notification.style.color = 'white';
+            notification.style.padding = '10px 20px';
+            notification.style.borderRadius = '4px';
+            notification.style.zIndex = '1000';
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 2 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => document.body.removeChild(notification), 500);
+            }, 2000);
+        }
+    } catch (error) {
+        console.error('Sharing failed:', error);
     }
 });

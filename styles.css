@@ -6,14 +6,51 @@
 }
 
 body {
-    background-color: #000000; /* Changed to pure black for protest site */
-    color: #FFFFFF; /* Changed to white text for contrast */
+    background-color: #000000;
+    position: relative;
+    color: #FFFFFF;
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
     margin: 0;
-    padding-bottom: 80px; /* Space for fixed footer */
+    padding-bottom: 80px;
     min-height: 100vh;
+}
+
+/* Remove the body overlay */
+body::before {
+    content: none;
+}
+
+/* Add background to header area only */
+header {
     position: relative;
+    padding: 40px 0; /* Increased padding top/bottom */
+    background-image: url('images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+    margin-bottom: 30px; /* Add space between header and content below */
+    border-bottom: none; /* Remove the border */
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Reduced opacity in gradient for more visible background */
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0, 0, 0, 0.2) 0%, 
+        rgba(0, 0, 0, 0.4) 30%, 
+        rgba(0, 0, 0, 0.7) 60%,
+        rgba(0, 0, 0, 0.9) 80%,
+        rgba(0, 0, 0, 1) 100%
+    );
+    z-index: -1;
 }
 
 .container {
@@ -23,6 +60,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 /* Typography */
@@ -33,6 +72,7 @@ h1 {
     color: #E74C3C; /* Secondary color (red) for headline impact */
     text-align: center;
     margin: 40px 0 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Add shadow for readability */
 }
 
 .explanatory-text {
@@ -42,6 +82,7 @@ h1 {
     text-align: center;
     max-width: 900px;
     margin: 0 auto 25px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* Add shadow for readability */
 }
 
 .constitution-excerpt {
@@ -53,6 +94,29 @@ h1 {
     text-align: center;
     max-width: 800px;
     margin: 0 auto 50px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Add shadow for readability */
+}
+
+/* Scroll button styling */
+.scroll-button {
+    background: rgba(231, 76, 60, 0.7);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    margin-top: -30px; /* Negative margin to bring it closer to the constitution excerpt */
+    margin-bottom: 30px;
+    transition: all 0.2s ease;
+    display: block;
+    margin-left: auto;
+    margin-right: auto; /* Center the button */
+}
+
+.scroll-button:hover {
+    background: rgba(231, 76, 60, 0.9);
+    transform: translateY(2px);
 }
 
 /* Image Slider */
@@ -60,8 +124,8 @@ h1 {
     width: 100%;
     position: relative;
     overflow: hidden;
-    margin: 0 auto 50px;
-    height: 500px;
+    margin: 0 auto 15px; /* Reduced bottom margin significantly */
+    height: 400px; /* Reduced height from 500px */
 }
 
 .slider-container {
@@ -76,7 +140,7 @@ h1 {
     width: calc(33.333% - 20px);
     height: 100%;
     margin: 0 10px;
-    object-fit: contain;
+    object-fit: cover; /* Changed from contain to cover to crop sides if needed */
     border-radius: 4px;
 }
 
@@ -362,6 +426,48 @@ h1 {
     background-color: #222222; /* Dark gray instead of blue */
 }
 
+/* Floating share button */
+.share-button {
+    position: fixed;
+    right: 20px;
+    bottom: 70px; /* Position above footer */
+    background-color: #E74C3C;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 99;
+    transition: all 0.2s ease;
+}
+
+.share-button:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.share-icon {
+    font-size: 18px;
+}
+
+.share-text {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .share-button {
+        bottom: 110px; /* Position higher on mobile to account for taller footer */
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
 /* Responsive Design - Updated to match design doc breakpoints */
 @media (max-width: 1024px) {
     .video-grid {
@@ -369,7 +475,7 @@ h1 {
     }
     
     .image-slider {
-        height: 350px;
+        height: 300px; /* Reduced from 350px */
     }
 }
 
@@ -397,10 +503,26 @@ h1 {
         grid-template-columns: 1fr; /* 1 column for mobile */
     }
     
-    .image-slider,
+    .image-slider {
+        height: 200px; /* Reduced from 250px */
+        margin: 0 auto 10px; /* Even smaller margin on mobile */
+    }
+    
     .slider-container,
     .slider-image {
-        height: 300px;
+        height: 200px; /* Match the new slider height */
+    }
+    
+    /* Add a subtle indication that there's more content */
+    .image-slider::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 30px;
+        background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.5));
+        pointer-events: none;
     }
     
     .footer {
@@ -416,5 +538,13 @@ h1 {
     .footer-text {
         order: 3; /* Move copyright text to the bottom on mobile */
         width: 100%;
+        font-size: 0.7rem; /* Make copyright text smaller on mobile */
+    }
+
+    .scroll-button {
+        font-size: 0.7rem;
+        padding: 5px 10px;
+        margin-top: -20px;
+        margin-bottom: 20px;
     }
 }
