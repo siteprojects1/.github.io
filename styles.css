@@ -27,11 +27,13 @@ header {
     padding: 40px 0; /* Increased padding top/bottom */
     background-image: url('images/background.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: center 40%; /* Center the image closer to the text */
     background-repeat: no-repeat;
     z-index: 1;
     margin-bottom: 30px; /* Add space between header and content below */
     border-bottom: none; /* Remove the border */
+    /* Add subtle contrast enhancement to background */
+    filter: contrast(1.1) brightness(1.05);
 }
 
 header::before {
@@ -41,14 +43,21 @@ header::before {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Reduced opacity in gradient for more visible background */
+    /* Lighter gradient for better background visibility */
     background: radial-gradient(
         ellipse at center,
-        rgba(0, 0, 0, 0.2) 0%, 
-        rgba(0, 0, 0, 0.4) 30%, 
-        rgba(0, 0, 0, 0.7) 60%,
-        rgba(0, 0, 0, 0.9) 80%,
+        rgba(0, 0, 0, 0.1) 0%, 
+        rgba(0, 0, 0, 0.3) 30%, 
+        rgba(0, 0, 0, 0.6) 60%,
+        rgba(0, 0, 0, 0.8) 80%,
         rgba(0, 0, 0, 1) 100%
+    ), linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.5) 15%,
+        rgba(0, 0, 0, 0.3) 30%,
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0.15) 100%
     );
     z-index: -1;
 }
@@ -126,6 +135,7 @@ h1 {
     overflow: hidden;
     margin: 0 auto 15px; /* Reduced bottom margin significantly */
     height: 400px; /* Reduced height from 500px */
+    padding-bottom: 2px; /* Add miniscule padding at bottom */
 }
 
 .slider-container {
@@ -138,10 +148,11 @@ h1 {
 .slider-image {
     min-width: calc(33.333% - 20px);
     width: calc(33.333% - 20px);
-    height: 100%;
-    margin: 0 10px;
-    object-fit: cover; /* Changed from contain to cover to crop sides if needed */
+    height: calc(100% - 4px); /* Add small padding by reducing height slightly */
+    margin: 0 10px 4px 10px; /* Add small bottom margin */
+    object-fit: contain; /* Change to 'contain' for desktop to show full images */
     border-radius: 4px;
+    max-height: 380px; /* Make images a bit smaller on desktop */
 }
 
 /* Slider controls */
@@ -333,6 +344,11 @@ h1 {
     z-index: 100;
 }
 
+/* Remove the container - we'll use different approaches for each screen size */
+.boycott-container {
+    display: none; /* Hide this container as we're not using it */
+}
+
 .signature {
     height: 35px;
     width: auto;
@@ -349,7 +365,8 @@ h1 {
     text-decoration: none;
     font-weight: bold;
     transition: color 0.2s ease;
-    margin-left: 140px; /* Increased margin to move further right */
+    /* Desktop-specific positioning - reduced margin to move left */
+    margin-left: 180px; /* Adjusted for better centering on desktop */
 }
 
 .boycott-link:hover {
@@ -473,6 +490,19 @@ h1 {
         padding: 8px 16px;
         font-size: 14px;
     }
+    
+    .footer {
+        justify-content: center;
+        text-align: center;
+        padding: 8px;
+        min-height: 30px; /* Even smaller footer height (was 36px) */
+        padding: 2px; /* Further reduced padding (was 3px) */
+    }
+    
+    .boycott-link {
+        margin-left: 0; /* Remove margin on mobile */
+        margin-right: 0;
+    }
 }
 
 /* Responsive Design - Updated to match design doc breakpoints */
@@ -513,11 +543,12 @@ h1 {
     .image-slider {
         height: 200px; /* Reduced from 250px */
         margin: 0 auto 10px; /* Even smaller margin on mobile */
+        margin-top: 0; /* Connect directly to header */
     }
     
     .slider-container,
     .slider-image {
-        height: 200px; /* Match the new slider height */
+        height: calc(200px - 4px); /* Match slider height minus padding */
     }
     
     /* Add a subtle indication that there's more content */
@@ -536,6 +567,8 @@ h1 {
         justify-content: center;
         text-align: center;
         padding: 8px;
+        min-height: 30px; /* Even smaller footer height (was 36px) */
+        padding: 2px; /* Further reduced padding (was 3px) */
     }
     
     .signature {
@@ -556,7 +589,59 @@ h1 {
     }
     
     header {
-        background-size: 150%; /* Zoom out the background image on mobile */
-        background-position: center top; /* Position from the top to ensure important content is visible */
+        background-size: 200%; /* More zoomed out (was 150%) */
+        background-position: center bottom; /* Anchor background to bottom to connect with slider */
+        position: relative;
+        padding-bottom: 0; /* Set consistent padding */
+        margin-bottom: 0; /* Remove margin to connect directly with slider */
+    }
+    
+    .slider-btn {
+        margin: 0 30px; /* Move buttons further from center on mobile */
+    }
+    
+    .slider-image {
+        object-fit: cover; /* Use cover on mobile */
+        max-height: none; /* Remove max-height constraint on mobile */
+    }
+}
+
+/* Add a new breakpoint for very narrow phones */
+@media (max-width: 480px) {
+    header {
+        background-position: center 25%; /* Center to the text part rather than the bottom */
+        /* Slight zoom out for narrow screens */
+        background-size: 180%; /* Less zoomed out to show more detail (was 220%) */
+    }
+    
+    .footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px; /* Smaller gap between footer items (was 10px) */
+        min-height: 28px; /* Smallest footer height for narrow phones (was 32px) */
+        padding: 1px; /* Minimal padding (was 2px) */
+    }
+    
+    .signature, .boycott-link, .footer-text {
+        margin: 4px auto; /* Center all footer elements */
+    }
+    
+    .signature {
+        height: 25px; /* Even smaller signature on very narrow screens (was 30px) */
+    }
+    
+    .boycott-link {
+        order: 2; /* Keep in the middle */
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .footer-text {
+        font-size: 0.65rem; /* Even smaller copyright text (was 0.7rem) */
+    }
+    
+    .share-button {
+        bottom: 70px; /* Move share button up more due to smaller footer */
+        padding: 6px 14px; /* Slightly smaller button */
     }
 }
