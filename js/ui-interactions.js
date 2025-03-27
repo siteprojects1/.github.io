@@ -4,16 +4,21 @@
  * Set up the scroll button functionality
  */
 function setupScrollButton() {
-    const scrollButton = document.getElementById('scroll-to-videos');
-    if (scrollButton) {
-        scrollButton.addEventListener('click', () => {
-            const videoGrid = document.getElementById('video-grid');
-            if (videoGrid) {
-                // Use a smoother scroll with longer duration
-                smoothScrollTo(videoGrid, 1000);
-            }
-        });
-    }
+    // Handle both desktop and mobile scroll buttons
+    const scrollButtonIds = ['scroll-to-videos', 'scroll-to-videos-mobile'];
+    
+    scrollButtonIds.forEach(buttonId => {
+        const scrollButton = document.getElementById(buttonId);
+        if (scrollButton) {
+            scrollButton.addEventListener('click', () => {
+                const videoGrid = document.getElementById('video-grid');
+                if (videoGrid) {
+                    // Use a smoother scroll with longer duration
+                    smoothScrollTo(videoGrid, 1000);
+                }
+            });
+        }
+    });
 }
 
 /**

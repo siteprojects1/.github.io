@@ -6,30 +6,45 @@
     <title>Zulme Tanık Ol!</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛓️</text></svg>">
     <meta name="description" content="19 Mart direnişi ve olayları hakkında video ve görsel arşivi">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Zulme Tanık Ol!</h1>
+        <!-- Hero section with unified content -->
+        <div class="hero-section">
+            <div class="fade-overlay"></div>
+            <div class="hero-content">
+                <h1>Zulme Tanık Ol!</h1>
+                <div class="text-content">
+                    <p class="explanatory-text">19 Mart direnişi, Ekrem İmamoğlu'nun hukuksuzca tutuklanmasının ardından başladı. Polis günlerdir, suçu sadece haklarımızı savunmak olan gençlere acımasızca müdahale ediyor. Plastik mermilerle, coplarla, tomalarla ve biber gazıyla Türk bayraklı evlatlarımıza, orantısız güç uyguluyor.</p>
+                    <div class="constitution-excerpt">
+                        <p>Türkiye Cumhuriyeti Anayasası Madde 34 - Herkes, önceden izin almadan, silahsız ve saldırısız toplantı ve gösteri yürüyüşü düzenleme hakkına sahiptir.</p>
+                    </div>
+                    <button id="scroll-to-videos" class="scroll-button">↓ Videolar için aşağı kaydırın ↓</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile text content - OUTSIDE of hero section -->
+        <div class="mobile-text-content">
             <p class="explanatory-text">19 Mart direnişi, Ekrem İmamoğlu'nun hukuksuzca tutuklanmasının ardından başladı. Polis günlerdir, suçu sadece haklarımızı savunmak olan gençlere acımasızca müdahale ediyor. Plastik mermilerle, coplarla, tomalarla ve biber gazıyla Türk bayraklı evlatlarımıza, orantısız güç uyguluyor.</p>
             <div class="constitution-excerpt">
                 <p>Türkiye Cumhuriyeti Anayasası Madde 34 - Herkes, önceden izin almadan, silahsız ve saldırısız toplantı ve gösteri yürüyüşü düzenleme hakkına sahiptir.</p>
             </div>
-            <button id="scroll-to-videos" class="scroll-button">↓ Videolar için aşağı kaydırın ↓</button>
-        </header>
+            <button id="scroll-to-videos-mobile" class="scroll-button">↓ Videolar için aşağı kaydırın ↓</button>
+        </div>
 
         <div class="image-slider">
             <div class="slider-container">
-                <!-- First set of images -->
+                <!-- Image slides -->
                 <img src="images/image1.jpg" class="slider-image" alt="Protesto Görüntüsü 1">
-                <img src="images/image2.jpg" class="slider-image" alt="Protesto Görüntüsü 3">
-                <img src="images/image3.jpg" class="slider-image" alt="Protesto Görüntüsü 4">
-                <img src="images/image4.jpg" class="slider-image" alt="Protesto Görüntüsü 5">
-                <img src="images/image5.jpg" class="slider-image" alt="Protesto Görüntüsü 6">
+                <img src="images/image2.jpg" class="slider-image" alt="Protesto Görüntüsü 2">
+                <img src="images/image3.jpg" class="slider-image" alt="Protesto Görüntüsü 3">
+                <img src="images/image4.jpg" class="slider-image" alt="Protesto Görüntüsü 4">
+                <img src="images/image5.jpg" class="slider-image" alt="Protesto Görüntüsü 5">
                 <img src="images/image6.jpg" class="slider-image" alt="Protesto Görüntüsü 6">
             </div>
             <div class="slider-controls">

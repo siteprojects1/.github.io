@@ -34,19 +34,84 @@ function loadVideo(container, videoId) {
     wrapper.style.width = '100%';
     wrapper.style.height = '100%';
     
-    // Add muted=1 to allow autoplay on mobile devices
-    wrapper.innerHTML = `
-        <button class="fullscreen-btn" onclick="document.fullscreenElement ? document.exitFullscreen() : this.parentNode.requestFullscreen()">⛶</button>
-        <iframe src="https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0&autoplay=1&muted=1" 
-            frameborder="0" 
-            allow="autoplay; fullscreen; picture-in-picture" 
-            allowfullscreen
-            playsinline
-            webkit-playsinline
-            style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></iframe>
-    `;
+    // Create fullscreen button with proper icon
+    const fullscreenBtn = document.createElement('button');
+    fullscreenBtn.className = 'fullscreen-btn';
+    fullscreenBtn.innerHTML = '⤢';
+    fullscreenBtn.setAttribute('aria-label', 'Toggle fullscreen');
     
+    // Add iframe with proper settings
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0&autoplay=1&muted=1`;
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('playsinline', '');
+    iframe.setAttribute('webkit-playsinline', '');
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.position = 'absolute';
+    iframe.style.top = '0';
+    iframe.style.left = '0';
+    
+    // Add elements to wrapper
+    wrapper.appendChild(fullscreenBtn);
+    wrapper.appendChild(iframe);
+    
+    // Add fullscreen functionality
+    fullscreenBtn.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent video click event
+        toggleFullScreen(container);
+    });
+    
+    // Append wrapper to container
     container.appendChild(wrapper);
+    
+    // Update fullscreen button icon when fullscreen state changes
+    document.addEventListener('fullscreenchange', function() {
+        updateFullscreenButtonIcon(container);
+    });
+}
+
+/**
+ * Toggle fullscreen state for an element
+ * @param {HTMLElement} element - The element to toggle fullscreen for
+ */
+function toggleFullScreen(element) {
+    if (!document.fullscreenElement) {
+        // Enter fullscreen
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.webkitRequestFullscreen) { /* Safari */
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) { /* IE11 */
+            element.msRequestFullscreen();
+        }
+    } else {
+        // Exit fullscreen
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
+        }
+    }
+}
+
+/**
+ * Update fullscreen button icon based on current state
+ * @param {HTMLElement} container - The container with the fullscreen button
+ */
+function updateFullscreenButtonIcon(container) {
+    const fullscreenBtn = container.querySelector('.fullscreen-btn');
+    if (!fullscreenBtn) return;
+    
+    if (document.fullscreenElement) {
+        fullscreenBtn.innerHTML = '⤓'; // Exit fullscreen icon
+    } else {
+        fullscreenBtn.innerHTML = '⤢'; // Enter fullscreen icon
+    }
 }
 
 /**
