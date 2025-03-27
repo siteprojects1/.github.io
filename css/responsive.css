@@ -1,0 +1,212 @@
+/*
+Media
+queries
+*/
+
+/* Responsive Breakpoints */
+
+/* Tablet view */
+@media (max-width: 1024px) {
+    .video-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .image-slider {
+        height: 300px;
+    }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+    body {
+        font-size: 0.875rem;
+        padding-bottom: 100px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+        margin: 30px 0 15px;
+    }
+    
+    .explanatory-text {
+        font-size: 1rem;
+    }
+    
+    .constitution-excerpt {
+        font-size: 0.875rem;
+        padding: 12px;
+    }
+    
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .image-slider {
+        height: 200px;
+        margin: 0 auto 10px;
+        margin-top: 0;
+    }
+    
+    .slider-container,
+    .slider-image {
+        height: calc(200px - 4px);
+    }
+    
+    /* Gradient indication for more content */
+    .image-slider::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 30px;
+        background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.5));
+        pointer-events: none;
+    }
+    
+    .footer {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        min-height: 48px; /* Increased from 40px */
+        padding: 5px 8px; /* Increased top/bottom padding */
+    }
+    
+    .signature {
+        height: 22px;
+        margin: 0 0 2px 0;
+        order: 1;
+        padding-left: 8px; /* Add left padding */
+    }
+    
+    .boycott-link {
+        margin: 0;
+        padding: 0;
+        order: 2;
+        font-size: 0.85rem;
+        padding-left: 8px; /* Add left padding */
+    }
+    
+    .footer-text {
+        margin: 0 0 0 auto;
+        order: 3;
+        width: auto;
+        text-align: right;
+        font-size: 0.7rem;
+        position: absolute;
+        right: 12px; /* Increased from 8px for more right padding */
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .scroll-button {
+        font-size: 0.7rem;
+        padding: 5px 10px;
+        margin-top: -20px;
+        margin-bottom: 20px;
+    }
+    
+    header {
+        background-size: 100%;
+        background-position: center bottom;
+        position: relative;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+    
+    .slider-btn {
+        margin: 0 30px;
+    }
+    
+    .slider-image {
+        object-fit: cover;
+        max-height: none;
+    }
+    
+    .share-button {
+        bottom: 120px; /* Increased from 110px to avoid overlap with taller footer */
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    
+    /* Mobile modal adjustments */
+    .modal-content {
+        margin: 10% auto 0;
+        padding: 20px;
+        width: 90%;
+        max-height: 70vh;
+    }
+    
+    .hitabe-text {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-top: 10px;
+        column-count: 1; /* Single column on mobile */
+    }
+    
+    .hitabe-text p {
+        margin-bottom: 1em;
+    }
+    
+    .hitabe-text .opening-line {
+        font-size: 1.1rem;
+        margin-bottom: 1em;
+    }
+}
+
+/* Very narrow phones */
+@media (max-width: 480px) {
+    header {
+        background-position: center 25%;
+        background-size: 140%;
+    }
+    
+    .footer {
+        min-height: 42px; /* Increased from 36px */
+        padding: 3px 6px;
+    }
+    
+    .signature {
+        height: 18px;
+        margin: 0 0 1px 0;
+    }
+    
+    .boycott-link {
+        font-size: 0.7rem;
+        margin: 0;
+    }
+    
+    .footer-text {
+        font-size: 0.65rem;
+        margin: 0 0 0 auto;
+    }
+    
+    .share-button {
+        bottom: 80px; /* Increased from 70px */
+        padding: 6px 14px;
+    }
+    
+    /* Even smaller modal for very narrow phones */
+    .modal-content {
+        margin: 5% auto 0;
+        padding: 15px;
+        width: 95%;
+    }
+    
+    .close-modal {
+        top: 5px;
+        right: 10px;
+        font-size: 20px;
+    }
+    
+    .hitabe-text {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+    
+    .hitabe-text .opening-line {
+        font-size: 1rem;
+    }
+}
