@@ -26,6 +26,11 @@ function loadVideo(container, videoId) {
     // Remove any existing content
     container.innerHTML = '';
     
+    // Store the original container properties
+    const originalWidth = container.offsetWidth;
+    const originalHeight = container.offsetHeight;
+    const originalPosition = window.getComputedStyle(container).position;
+    
     // Create a new wrapper div to maintain aspect ratio
     const wrapper = document.createElement('div');
     wrapper.style.position = 'absolute';
@@ -57,13 +62,27 @@ function loadVideo(container, videoId) {
     iframe.style.left = '0';
     
     // Add elements to wrapper
-    wrapper.appendChild(fullscreenBtn);
     wrapper.appendChild(iframe);
+    wrapper.appendChild(fullscreenBtn); // Place button after iframe to ensure it's on top
     
-    // Add fullscreen functionality
+    // Store original container dimensions
+    container.setAttribute('data-original-width', originalWidth);
+    container.setAttribute('data-original-height', originalHeight);
+    container.setAttribute('data-original-position', originalPosition);
+    
+    // Add fullscreen functionality with more reliable click handler
     fullscreenBtn.addEventListener('click', function(e) {
         e.stopPropagation(); // Prevent video click event
+        
+        // The toggle function now handles both entering and exiting fullscreen
         toggleFullScreen(container, iframe);
+    });
+    
+    // Handle ESC key for exiting iOS fullscreen
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && container.classList.contains('ios-fullscreen')) {
+            toggleFullScreen(container, iframe);
+        }
     });
     
     // Append wrapper to container
@@ -89,9 +108,13 @@ function toggleFullScreen(element, iframe) {
     // Detect iOS device
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     
-    if (!document.fullscreenElement && 
+    // Check if we're already in iOS fullscreen mode
+    const isInIOSFullscreen = element.classList.contains('ios-fullscreen');
+    
+    if ((!document.fullscreenElement && 
         !document.webkitFullscreenElement && 
-        !document.mozFullScreenElement) {
+        !document.mozFullScreenElement) && 
+        !isInIOSFullscreen) {
         
         // Enter fullscreen - standard approach first
         if (element.requestFullscreen) {
@@ -103,21 +126,30 @@ function toggleFullScreen(element, iframe) {
         } else if (element.mozRequestFullScreen) {
             element.mozRequestFullScreen();
         }
-        // iOS-specific solution using Vimeo's API
+        // iOS-specific solution
         else if (isIOS && iframe) {
-            // Use postMessage to communicate with Vimeo Player API
-            iframe.contentWindow.postMessage(JSON.stringify({
-                method: 'setFullscreen',
-                value: true
-            }), '*');
-            
             // Add iOS-specific class for custom fullscreen styling
             element.classList.add('ios-fullscreen');
             document.body.classList.add('ios-fullscreen-body');
             
+            // Try to use Vimeo's API if available
+            try {
+                iframe.contentWindow.postMessage(JSON.stringify({
+                    method: 'setFullscreen',
+                    value: true
+                }), '*');
+            } catch (e) {
+                console.log('Vimeo fullscreen API not available');
+            }
+            
             // Update button immediately for iOS
             const fullscreenBtn = element.querySelector('.fullscreen-btn');
             if (fullscreenBtn) fullscreenBtn.innerHTML = '⤓';
+            
+            // Store original positions to restore later
+            element.setAttribute('data-original-scroll', window.scrollY);
+            element.setAttribute('data-original-position', element.style.position || 'static');
+            element.setAttribute('data-original-zindex', element.style.zIndex || 'auto');
         }
     } else {
         // Exit fullscreen
@@ -130,16 +162,25 @@ function toggleFullScreen(element, iframe) {
         } else if (document.mozCancelFullScreen) {
             document.mozCancelFullScreen();
         }
-        // iOS-specific solution using Vimeo's API
-        else if (isIOS && iframe) {
-            iframe.contentWindow.postMessage(JSON.stringify({
-                method: 'setFullscreen',
-                value: false
-            }), '*');
+        // iOS-specific solution
+        else if (isIOS && isInIOSFullscreen) {
+            // Try to use Vimeo's API if available
+            try {
+                iframe.contentWindow.postMessage(JSON.stringify({
+                    method: 'setFullscreen',
+                    value: false
+                }), '*');
+            } catch (e) {
+                console.log('Vimeo fullscreen API not available');
+            }
             
             // Remove iOS-specific classes
             element.classList.remove('ios-fullscreen');
             document.body.classList.remove('ios-fullscreen-body');
+            
+            // Restore original positions
+            const originalScroll = parseInt(element.getAttribute('data-original-scroll') || '0');
+            window.scrollTo(0, originalScroll);
             
             // Update button immediately for iOS
             const fullscreenBtn = element.querySelector('.fullscreen-btn');
