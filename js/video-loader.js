@@ -40,7 +40,7 @@ function loadVideo(container, videoId) {
     fullscreenBtn.innerHTML = '⤢';
     fullscreenBtn.setAttribute('aria-label', 'Toggle fullscreen');
     
-    // Add iframe with proper settings
+    // Add iframe with proper settings - keeping Vimeo controls
     const iframe = document.createElement('iframe');
     iframe.src = `https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0&autoplay=1&muted=1`;
     iframe.setAttribute('frameborder', '0');
@@ -48,6 +48,8 @@ function loadVideo(container, videoId) {
     iframe.setAttribute('allowfullscreen', '');
     iframe.setAttribute('playsinline', '');
     iframe.setAttribute('webkit-playsinline', '');
+    iframe.setAttribute('webkitallowfullscreen', ''); // For older Safari versions
+    iframe.setAttribute('mozallowfullscreen', ''); // For Firefox
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.position = 'absolute';
@@ -61,7 +63,7 @@ function loadVideo(container, videoId) {
     // Add fullscreen functionality
     fullscreenBtn.addEventListener('click', function(e) {
         e.stopPropagation(); // Prevent video click event
-        toggleFullScreen(container);
+        toggleFullScreen(container, iframe);
     });
     
     // Append wrapper to container
@@ -71,30 +73,77 @@ function loadVideo(container, videoId) {
     document.addEventListener('fullscreenchange', function() {
         updateFullscreenButtonIcon(container);
     });
+    
+    // iOS-specific fullscreen change events
+    document.addEventListener('webkitfullscreenchange', function() {
+        updateFullscreenButtonIcon(container);
+    });
 }
 
 /**
  * Toggle fullscreen state for an element
  * @param {HTMLElement} element - The element to toggle fullscreen for
+ * @param {HTMLIFrameElement} iframe - The iframe element for iOS workaround
  */
-function toggleFullScreen(element) {
-    if (!document.fullscreenElement) {
-        // Enter fullscreen
+function toggleFullScreen(element, iframe) {
+    // Detect iOS device
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    
+    if (!document.fullscreenElement && 
+        !document.webkitFullscreenElement && 
+        !document.mozFullScreenElement) {
+        
+        // Enter fullscreen - standard approach first
         if (element.requestFullscreen) {
             element.requestFullscreen();
-        } else if (element.webkitRequestFullscreen) { /* Safari */
+        } else if (element.webkitRequestFullscreen) {
             element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) { /* IE11 */
+        } else if (element.msRequestFullscreen) {
             element.msRequestFullscreen();
+        } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+        }
+        // iOS-specific solution using Vimeo's API
+        else if (isIOS && iframe) {
+            // Use postMessage to communicate with Vimeo Player API
+            iframe.contentWindow.postMessage(JSON.stringify({
+                method: 'setFullscreen',
+                value: true
+            }), '*');
+            
+            // Add iOS-specific class for custom fullscreen styling
+            element.classList.add('ios-fullscreen');
+            document.body.classList.add('ios-fullscreen-body');
+            
+            // Update button immediately for iOS
+            const fullscreenBtn = element.querySelector('.fullscreen-btn');
+            if (fullscreenBtn) fullscreenBtn.innerHTML = '⤓';
         }
     } else {
         // Exit fullscreen
         if (document.exitFullscreen) {
             document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) { /* Safari */
+        } else if (document.webkitExitFullscreen) {
             document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { /* IE11 */
+        } else if (document.msExitFullscreen) {
             document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        }
+        // iOS-specific solution using Vimeo's API
+        else if (isIOS && iframe) {
+            iframe.contentWindow.postMessage(JSON.stringify({
+                method: 'setFullscreen',
+                value: false
+            }), '*');
+            
+            // Remove iOS-specific classes
+            element.classList.remove('ios-fullscreen');
+            document.body.classList.remove('ios-fullscreen-body');
+            
+            // Update button immediately for iOS
+            const fullscreenBtn = element.querySelector('.fullscreen-btn');
+            if (fullscreenBtn) fullscreenBtn.innerHTML = '⤢';
         }
     }
 }
@@ -107,7 +156,10 @@ function updateFullscreenButtonIcon(container) {
     const fullscreenBtn = container.querySelector('.fullscreen-btn');
     if (!fullscreenBtn) return;
     
-    if (document.fullscreenElement) {
+    if (document.fullscreenElement || 
+        document.webkitFullscreenElement || 
+        document.mozFullScreenElement ||
+        container.classList.contains('ios-fullscreen')) {
         fullscreenBtn.innerHTML = '⤓'; // Exit fullscreen icon
     } else {
         fullscreenBtn.innerHTML = '⤢'; // Enter fullscreen icon
