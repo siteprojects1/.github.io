@@ -153,7 +153,7 @@ function toggleFullScreen(element, iframe) {
             
             // Update button immediately for iOS
             const fullscreenBtn = element.querySelector('.fullscreen-btn');
-            if (fullscreenBtn) fullscreenBtn.innerHTML = '⤓';
+            if (fullscreenBtn) fullscreenBtn.innerHTML = 'x';
             
             // Store original positions to restore later
             element.setAttribute('data-original-scroll', window.scrollY);
