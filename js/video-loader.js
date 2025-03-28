@@ -1,17 +1,26 @@
 // Video loading functionality
 const allVideos = [
-    '1069778933', '1069778911', '1069778877', '1069780195',
-    '1069055189', '1069710654', '1069710703', '1069714903',
-    '1069720118', '1069720051', '1069086739', '1069719595',
+    '1069778933', '1069778911', '1069778877', '1070283295', 
+    '1070283254', '1070283275', '1069780195', '1069055189', 
+    '1069710654', '1069710703', '1069714903', '1069720118',
+    '1069720051', '1069086739', '1069719595', '1069055176',
     '1069719749', '1069719692', '1069719657', '1069719628', 
     '1068978779', '1068979046', '1068979098', '1068979142', 
     '1069719983', '1069719932', '1069719846', '1069719790',
     '1068979205', '1068979244', '1068978881', '1069713151', 
-    '1068978836', '1069052048', '1069052091', '1069052080',
-    '1069052068', '1069052057', '1069720017', '1069055176',
-    '1069055162', '1069055149', '1069055138', '1069055126',
-    '1069055115', '1069726380', '1069726346'
+    '1069052048', '1069052091', '1069052080', '1069055126',
+    '1069052068', '1069052057', '1069720017', '1069726346',
+    '1069055162', '1069055149', '1069055138', '1069726380', 
+    '1069055115', 
 ];
+
+// Featured video info
+const featuredVideo = {
+    id: '1070270679',
+    creditName: 'Kemal Aslan',
+    creditLink: 'https://www.instagram.com/reel/DHtATU9txvJ/?igsh=MWR6Nm1tcjM2ZW5hdQ==',
+    description: "'ın kamerasından 23 Mart 2025 Saraçhane..."
+};
 
 let currentPage = 0;
 const videosPerPage = 6;
@@ -201,9 +210,9 @@ function updateFullscreenButtonIcon(container) {
         document.webkitFullscreenElement || 
         document.mozFullScreenElement ||
         container.classList.contains('ios-fullscreen')) {
-        fullscreenBtn.innerHTML = '⤓'; // Exit fullscreen icon
+        fullscreenBtn.innerHTML = '×'; // Changed to simple X for exit fullscreen icon
     } else {
-        fullscreenBtn.innerHTML = '⤢'; // Enter fullscreen icon
+        fullscreenBtn.innerHTML = '⤢'; // Enter fullscreen icon remains the same
     }
 }
 
@@ -262,7 +271,68 @@ function setupInfiniteScroll() {
     });
 }
 
+/**
+ * Load featured video with credit and description
+ */
+function loadFeaturedVideo() {
+    const featuredSection = document.getElementById('featured-video-section');
+    if (!featuredSection) return;
+    
+    // Create container for the featured video
+    const videoContainer = document.createElement('div');
+    videoContainer.className = 'featured-video-container fade-in';
+    
+    // Create video thumbnail
+    const videoThumbnail = document.createElement('div');
+    videoThumbnail.className = 'video-thumbnail featured-thumbnail';
+    videoThumbnail.dataset.vimeoId = featuredVideo.id;
+    videoThumbnail.onclick = function() {
+        loadVideo(videoContainer, featuredVideo.id);
+    };
+    
+    // Add play button to thumbnail
+    const playButton = document.createElement('div');
+    playButton.className = 'play-button';
+    videoThumbnail.appendChild(playButton);
+    
+    // Create caption for the featured video
+    const videoCaption = document.createElement('div');
+    videoCaption.className = 'featured-video-caption';
+    
+    // Create a single line with the name as clickable link
+    // Format: "Kemal Aslan'ın kamerasından 23 Mart 2025 Saraçhane..."
+    
+    // Add credit with link (only the name part)
+    const creditLink = document.createElement('a');
+    creditLink.href = featuredVideo.creditLink;
+    creditLink.className = 'featured-credit';
+    creditLink.target = '_blank';
+    creditLink.rel = 'noopener noreferrer';
+    creditLink.textContent = featuredVideo.creditName;
+    
+    // Create the full caption text
+    videoCaption.appendChild(creditLink);
+    videoCaption.appendChild(document.createTextNode(featuredVideo.description));
+    
+    // Add elements to the DOM
+    videoContainer.appendChild(videoThumbnail);
+    videoContainer.appendChild(videoCaption);
+    featuredSection.appendChild(videoContainer);
+    
+    // Fetch the thumbnail
+    fetch(`https://vimeo.com/api/v2/video/${featuredVideo.id}.json`)
+        .then(response => response.json())
+        .then(data => {
+            if (data?.[0]?.thumbnail_large) {
+                videoThumbnail.style.backgroundImage = `url(${data[0].thumbnail_large})`;
+                videoThumbnail.classList.add('thumbnail-loaded');
+            }
+        })
+        .catch(() => videoThumbnail.classList.add('thumbnail-fallback'));
+}
+
 // Export functions for use in main.js
 window.loadVideo = loadVideo;
 window.loadMoreVideos = loadMoreVideos;
 window.setupInfiniteScroll = setupInfiniteScroll;
+window.loadFeaturedVideo = loadFeaturedVideo;

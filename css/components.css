@@ -31,7 +31,7 @@ styles
     background-image: url('../images/hero.png');
     background-size: cover;
     background-position: center center;
-    filter: blur(1px);
+    filter: blur(2px); /* Increased blur from 1px to 2px for desktop */
     opacity: 1;
     z-index: 0;
     pointer-events: none;
@@ -45,7 +45,7 @@ styles
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3); /* Slightly decreased overlay opacity */
+    background-color: rgba(0, 0, 0, 0.35); /* Increased darkness slightly from 0.3 */
     z-index: 1;
     pointer-events: none;
 }
@@ -57,12 +57,12 @@ styles
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 20%; /* Reduced from 35% to 20% */
+    height: 25%; /* Increased from 20% for more visible fade */
     background: linear-gradient(to bottom, 
                 rgba(0, 0, 0, 0) 0%,
-                rgba(0, 0, 0, 0.4) 40%,
-                rgba(0, 0, 0, 0.7) 80%,
-                rgba(0, 0, 0, 0.85) 100%);
+                rgba(0, 0, 0, 0.45) 40%, /* Increased opacity from 0.4 */
+                rgba(0, 0, 0, 0.75) 80%, /* Increased opacity from 0.7 */
+                rgba(0, 0, 0, 0.9) 100%); /* Increased opacity from 0.85 */
     z-index: 1;
     pointer-events: none;
 }
@@ -86,7 +86,9 @@ styles
     margin: 0 0 20px 0;
     padding: 15px 30px;
     color: #E74C3C; /* Changed to red */
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 
+                 0 0 20px rgba(0, 0, 0, 0.5), 
+                 0 4px 5px rgba(0, 0, 0, 0.7); /* Enhanced multi-layer shadow for depth */
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
     letter-spacing: -0.03em;
@@ -555,20 +557,94 @@ header::before {
     font-weight: 600;
 }
 
-.share-button:hover {
-    background-color: #c0392b;  /* Changed to darker red (was purple) */
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.6);  /* Updated shadow color to match red */
+/* Featured Video Section */
+.featured-video-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto 40px;
+    padding: 0 20px;
 }
 
-.share-icon {
-    font-size: 18px;
+.featured-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-.share-text {
-    font-weight: bold;
-    font-size: 14px;
-    letter-spacing: 0.02em;
+.featured-video-section {
+    width: 100%;
+}
+
+.featured-video-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    padding-top: 42%; /* Reduced from 56.25% for a shorter height (16:9 aspect ratio would be 56.25%) */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+    max-width: 750px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.featured-video-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+}
+
+.featured-thumbnail {
+    /* Removed red border */
+}
+
+.featured-video-caption {
+    position: relative;
+    background: rgba(17, 17, 17, 0.8);
+    backdrop-filter: blur(5px);
+    padding: 12px 15px;
+    border-radius: 0 0 12px 12px;
+    margin-top: -5px;
+    font-size: 0.95rem;
+    text-align: center;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    /* Removed border-top */
+}
+
+.featured-credit {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.featured-credit:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.featured-description {
+    color: var(--text-color);
+}
+
+/* Mobile adjustments for featured video */
+@media (max-width: 768px) {
+    .featured-video-wrapper {
+        margin: 20px auto 30px;
+        padding: 0 15px;
+    }
+    
+    .featured-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .featured-video-caption {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
 }
 
 /* Loading Indicator */

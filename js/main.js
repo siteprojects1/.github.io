@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initSlider();
     setupImageClickHandlers();
     
+    // Load featured video
+    loadFeaturedVideo();
+    
     // Load initial set of videos
     loadMoreVideos();
     setupInfiniteScroll();

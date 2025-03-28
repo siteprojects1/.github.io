@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zulme Tanık Ol!</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛓️</text></svg>">
-    <meta name="description" content="19 Mart direnişi ve olayları hakkında video ve görsel arşivi">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <meta name="description" content="19 Mart direnişi ve polis şiddeti video ve görsel arşivi">
+    <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -40,17 +40,22 @@
         <div class="image-slider">
             <div class="slider-container">
                 <!-- Image slides -->
-                <img src="images/image1.jpg" class="slider-image" alt="Protesto Görüntüsü 1">
-                <img src="images/image2.jpg" class="slider-image" alt="Protesto Görüntüsü 2">
-                <img src="images/image3.jpg" class="slider-image" alt="Protesto Görüntüsü 3">
-                <img src="images/image4.jpg" class="slider-image" alt="Protesto Görüntüsü 4">
-                <img src="images/image5.jpg" class="slider-image" alt="Protesto Görüntüsü 5">
-                <img src="images/image6.jpg" class="slider-image" alt="Protesto Görüntüsü 6">
+                <img src="images/image1.jpg" class="slider-image" alt="Image 1">
+                <img src="images/image2.jpg" class="slider-image" alt="Image 2">
+                <img src="images/image3.jpg" class="slider-image" alt="Image 3">
+                <img src="images/image4.jpg" class="slider-image" alt="Image 4">
+                <img src="images/image5.jpg" class="slider-image" alt="Image 5">
+                <img src="images/image6.jpg" class="slider-image" alt="Image 6">
             </div>
             <div class="slider-controls">
                 <button onclick="changeSlide(-1)" class="slider-btn">❮</button>
                 <button onclick="changeSlide(1)" class="slider-btn">❯</button>
             </div>
+        </div>
+
+        <div class="featured-video-wrapper">
+            <h2 class="featured-title">Öne Çıkan Video</h2>
+            <div id="featured-video-section" class="featured-video-section"></div>
         </div>
 
         <div id="video-grid" class="video-grid"></div>
@@ -59,8 +64,8 @@
             <p>Daha fazla video yükleniyor...</p>
         </div>
     </div>
-    
-    <!-- Modal for Gençliğe Hitabe -->
+
+    <!-- Modal -->
     <div id="hitabeModal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
@@ -84,8 +89,7 @@
 
     <!-- Floating share button -->
     <button id="share-button" class="share-button">
-        <span class="share-icon">↗</span>
-        <span class="share-text">Paylaş</span>
+        <span class="share-text">Paylaş!</span>
     </button>
 
     <!-- JavaScript modules -->
@@ -94,4 +98,3 @@
     <script src="js/ui-interactions.js"></script>
     <script src="js/main.js"></script>
 </body>
-</html>

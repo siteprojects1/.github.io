@@ -56,6 +56,7 @@ queries
     .hero-section::before {
         background-size: cover;
         background-position: center center;
+        filter: blur(0.8px); /* Reduced blur for mobile from 1px to 0.8px */
     }
     
     /* Hero content styling for mobile */
@@ -68,6 +69,7 @@ queries
     
     /* Mobile only shows title in hero */
     .hero-content h1 {
+        display: block;
         font-size: 2.5rem;
         padding: 10px 20px;
         margin-bottom: 0;
@@ -95,7 +97,7 @@ queries
         position: relative;
     }
     
-    /* Show title in hero image for mobile - without blur background, with red color */
+    /* Show title in hero image for mobile - with enhanced shadow */
     .hero-content h1 {
         display: block;
         font-size: 2.5rem;
@@ -106,6 +108,9 @@ queries
         backdrop-filter: none; /* Removed blur */
         color: #E74C3C; /* Changed to red */
         z-index: 5; /* Ensure it's above the blur */
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9),
+                     0 0 15px rgba(0, 0, 0, 0.8),
+                     0 3px 4px rgba(0, 0, 0, 0.7); /* Enhanced shadow for mobile */
     }
     
     /* Show text content below hero for mobile */
@@ -120,45 +125,49 @@ queries
         max-width: 600px;
     }
     
-    /* Show mobile text content - ensure it's displayed */
+    /* Improved mobile text content styling */
     .mobile-text-content {
         display: block;
-        padding: 5px 15px; /* Reduced top padding from 15px to 5px */
-        margin: 5px auto 15px; /* Reduced top margin from 15px to 5px */
-        width: 100%;
+        padding: 20px;
+        margin: 15px auto;
+        width: 92%;
         max-width: 600px;
-        background: none; /* Remove background container */
-        backdrop-filter: none; /* Remove backdrop filter */
-        border-radius: 0;
-        box-shadow: none; /* Remove shadow */
+        background: rgba(20, 20, 20, 0.85); /* Darker, more solid background */
+        backdrop-filter: blur(5px);
+        border-radius: 12px; /* Increased border radius */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), /* Enhanced shadow */
+                    0 2px 6px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05); /* Subtle inner highlight */
+        border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle border */
     }
     
-    /* Mobile explanatory text styling - no box, just text */
+    /* Mobile explanatory text styling - improved readability */
     .explanatory-text {
         font-size: 1.05rem;
-        line-height: 1.5;
+        line-height: 1.6; /* Increased line height for better readability */
         background: none;
         border-radius: 0;
-        margin: 10px 0; /* Reduced from 20px to 10px */
-        padding: 0 15px;
+        margin: 12px 0 15px;
+        padding: 0;
         border: none;
         box-shadow: none;
-        color: #ffffff; /* Explicitly setting to white */
+        color: #ffffff;
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
         font-weight: 400;
         letter-spacing: 0.01em;
     }
     
-    /* Constitution excerpt styling - keep the red border detail and blur */
+    /* Constitution excerpt styling - enhanced appearance */
     .constitution-excerpt {
         font-size: 0.95rem;
-        padding: 14px 18px;
+        padding: 16px 20px;
         margin: 20px 0 25px;
-        background: rgba(17, 17, 17, 0.8);
-        backdrop-filter: blur(5px); /* Keep blur as requested */
-        border-radius: 8px;
+        background: rgba(25, 25, 25, 0.7); /* Slightly darker background */
+        backdrop-filter: blur(5px);
+        border-radius: 10px;
         border-left: 4px solid rgba(231, 76, 60, 0.9);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
     
     .video-grid {
@@ -233,7 +242,7 @@ queries
         margin: 0;
         padding: 0;
         width: 100%;
-        font-size: 0.65rem;
+        font-size: 0.75rem; /* Increased from 0.65rem for better readability */
         text-align: center; /* Centered at bottom */
         opacity: 0.7;
         align-self: center; /* Ensure it's centered */
@@ -339,14 +348,14 @@ queries
         width: 90%;
     }
     
-    /* Update fade overlay for mobile - less aggressive fade */
+    /* Update fade overlay for mobile - stronger fade */
     .hero-section .fade-overlay {
-        height: 15%; /* Reduced from 20% for less fade in mobile */
+        height: 20%; /* Height between desktop (25%) and previous mobile setting (15%) */
         background: linear-gradient(to bottom, 
                     rgba(0, 0, 0, 0) 0%,
-                    rgba(0, 0, 0, 0.3) 40%, /* Reduced opacity from 0.4 */
-                    rgba(0, 0, 0, 0.5) 80%, /* Reduced opacity from 0.7 */
-                    rgba(0, 0, 0, 0.7) 100%); /* Reduced opacity from 0.85 */
+                    rgba(0, 0, 0, 0.4) 40%, 
+                    rgba(0, 0, 0, 0.65) 80%, 
+                    rgba(0, 0, 0, 0.8) 100%);
     }
 }
 
@@ -375,7 +384,7 @@ queries
     }
     
     .footer-text {
-        font-size: 0.55rem;
+        font-size: 0.65rem; /* Increased from 0.55rem */
         padding: 2px 0 0; /* Slightly smaller padding for very small screens */
         bottom: 5px;
     }
@@ -455,13 +464,13 @@ queries
         padding: 8px 16px;
     }
     
-    /* Even less fade for very small screens */
+    /* Even less fade for very small screens, but still stronger than before */
     .hero-section .fade-overlay {
-        height: 12%; /* Further reduced for very small screens */
+        height: 18%; /* Slightly reduced from mobile but still more than previous 12% */
         background: linear-gradient(to bottom, 
                     rgba(0, 0, 0, 0) 0%,
-                    rgba(0, 0, 0, 0.25) 40%,
-                    rgba(0, 0, 0, 0.4) 80%,
-                    rgba(0, 0, 0, 0.6) 100%);
+                    rgba(0, 0, 0, 0.35) 40%,
+                    rgba(0, 0, 0, 0.55) 80%,
+                    rgba(0, 0, 0, 0.7) 100%);
     }
 }
