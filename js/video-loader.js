@@ -242,17 +242,12 @@ function loadMoreVideos() {
         `;
         videoGrid.appendChild(videoContainer);
         
-        // Updated Vimeo API endpoint with CORS support
-        fetch(`https://api.vimeo.com/videos/${videoId}`, {
-            headers: {
-                'Accept': 'application/json'
-            }
-        })
+        fetch(`https://vimeo.com/api/v2/video/${videoId}.json`)
             .then(response => response.json())
             .then(data => {
-                if (data?.pictures?.sizes?.[3]?.link) {
+                if (data?.[0]?.thumbnail_large) {
                     const thumbnail = videoContainer.querySelector('.video-thumbnail');
-                    thumbnail.style.backgroundImage = `url(${data.pictures.sizes[3].link})`;
+                    thumbnail.style.backgroundImage = `url(${data[0].thumbnail_large})`;
                     thumbnail.classList.add('thumbnail-loaded');
                 }
             })
