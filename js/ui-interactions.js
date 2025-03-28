@@ -149,6 +149,28 @@ function setupShareButton() {
     }
 }
 
+/**
+ * Toggle fullscreen mode for the video container
+ * @param {HTMLElement} container - The video container element
+ * @param {HTMLElement} button - The fullscreen button element
+ */
+function toggleFullscreen(container, button) {
+    // Check if we're in fullscreen mode
+    const isFullscreen = container.classList.contains('ios-fullscreen');
+    
+    if (isFullscreen) {
+        // Exit fullscreen
+        document.body.classList.remove('ios-fullscreen-body');
+        container.classList.remove('ios-fullscreen');
+        button.innerHTML = '⛶'; // Reset to default fullscreen icon
+    } else {
+        // Enter fullscreen
+        document.body.classList.add('ios-fullscreen-body');
+        container.classList.add('ios-fullscreen');
+        button.innerHTML = '✕'; // Set to X icon when in fullscreen mode
+    }
+}
+
 // Export functions for use in main.js
 window.setupScrollButton = setupScrollButton;
 window.setupModal = setupModal;

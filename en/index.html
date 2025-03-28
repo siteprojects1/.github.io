@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Witness the Oppression!</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛓️</text></svg>">
+    <meta name="description" content="March 19 resistance and police brutality video and visual archive">
+    <link rel="stylesheet" href="../css/fonts.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Language toggle button -->
+        <div class="language-toggle">
+            <button id="language-switch" class="language-btn" data-current="en">TR</button>
+        </div>
+
+        <!-- Hero section with unified content -->
+        <div class="hero-section">
+            <div class="fade-overlay"></div>
+            <div class="hero-content">
+                <h1>Witness the Oppression!</h1>
+                <div class="text-content">
+                    <p class="explanatory-text">The March 19 resistance began after Ekrem İmamoğlu was unlawfully detained. For days, police have been brutally intervening against young people whose only crime is defending their rights. They are using excessive force with plastic bullets, batons, water cannons, and pepper spray against our youth carrying the Turkish flag.</p>
+                    <div class="constitution-excerpt">
+                        <p>Constitution of the Republic of Turkey, Article 34 - Everyone has the right to hold unarmed and peaceful meetings and demonstration marches without prior permission.</p>
+                    </div>
+                    <button id="scroll-to-videos" class="scroll-button">↓ Scroll down for videos ↓</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile text content - OUTSIDE of hero section -->
+        <div class="mobile-text-content">
+            <p class="explanatory-text">The March 19 resistance began after Ekrem İmamoğlu was unlawfully detained. For days, police have been brutally intervening against young people whose only crime is defending their rights. They are using excessive force with plastic bullets, batons, water cannons, and pepper spray against our youth carrying the Turkish flag.</p>
+            <div class="constitution-excerpt">
+                <p>Constitution of the Republic of Turkey, Article 34 - Everyone has the right to hold unarmed and peaceful meetings and demonstration marches without prior permission.</p>
+            </div>
+            <button id="scroll-to-videos-mobile" class="scroll-button">↓ Scroll down for videos ↓</button>
+        </div>
+
+        <div class="image-slider">
+            <div class="slider-container">
+                <!-- Image slides -->
+                <img src="../images/image1.jpg" class="slider-image" alt="Image 1">
+                <img src="../images/image2.jpg" class="slider-image" alt="Image 2">
+                <img src="../images/image3.jpg" class="slider-image" alt="Image 3">
+                <img src="../images/image4.jpg" class="slider-image" alt="Image 4">
+                <img src="../images/image5.jpg" class="slider-image" alt="Image 5">
+                <img src="../images/image6.jpg" class="slider-image" alt="Image 6">
+            </div>
+            <div class="slider-controls">
+                <button onclick="changeSlide(-1)" class="slider-btn">❮</button>
+                <button onclick="changeSlide(1)" class="slider-btn">❯</button>
+            </div>
+        </div>
+
+        <div class="featured-video-wrapper">
+            <h2 class="featured-title">Featured Video</h2>
+            <div id="featured-video-section" class="featured-video-section"></div>
+        </div>
+
+        <div id="video-grid" class="video-grid"></div>
+        <div id="loading-indicator" class="loading-indicator">
+            <div class="loading-spinner"></div>
+            <p>Loading more videos...</p>
+        </div>
+        
+        <!-- Privacy notice -->
+        <div class="privacy-notice">
+            <p>This site does not collect personal data, track users, or use analytics. Language preference is stored only in your browser's localStorage if you manually switch languages.</p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="hitabeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="hitabe-text">
+                <p class="opening-line">Turkish Youth!</p>
+                <p>Your first duty is to preserve and defend Turkish independence and the Turkish Republic forever.</p>
+                <p>This is the foundation of your existence and your future. This foundation is your most precious treasure. In the future, too, there will be malevolent people at home and abroad who will want to deprive you of this treasure. If someday you are compelled to defend your independence and your republic, you will not think about the circumstances and conditions of the situation before taking up your duty. These circumstances and conditions might be extremely unfavorable.</p>
+                <p>The enemies conspiring against your independence and your republic may have behind them a victory unprecedented in the annals of the world. By force and by trickery, all the fortresses of your beloved homeland may have been captured, all its shipyards occupied, all its armies dispersed, and every part of the country invaded. Graver and more important than all these circumstances, those who hold power within the country may be in error, misguided, and may even be traitors. Furthermore, they may identify personal interests with the political ambitions of the invaders.</p>
+                <p>Oh Turkish Youth! Your primary duty is to preserve and defend Turkish Independence and the Turkish Republic. The power you need is in the noble blood in your veins!</p>
+                <p class="signature-text">Mustafa Kemal Atatürk</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <img src="../images/ataturk-signature.png" alt="Atatürk Signature" class="signature">
+        <a href="https://boykotyap.net" class="boycott-link" target="_blank" rel="noopener noreferrer">Support the boycott!</a>
+        <p class="footer-text">© 2025 Witness the Oppression! | Made with ❤️</p>
+    </footer>
+
+    <!-- Floating share button -->
+    <button id="share-button" class="share-button">
+        <span class="share-text">Share!</span>
+    </button>
+
+    <!-- JavaScript modules -->
+    <script src="../js/slider.js"></script>
+    <script src="../js/video-loader.js"></script>
+    <script src="../js/ui-interactions.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/language-switcher.js"></script>
+</body>
+</html>

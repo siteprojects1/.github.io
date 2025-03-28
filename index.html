@@ -13,6 +13,11 @@
 </head>
 <body>
     <div class="container">
+        <!-- Language toggle button -->
+        <div class="language-toggle">
+            <button id="language-switch" class="language-btn" data-current="tr">EN</button>
+        </div>
+
         <!-- Hero section with unified content -->
         <div class="hero-section">
             <div class="fade-overlay"></div>
@@ -63,6 +68,11 @@
             <div class="loading-spinner"></div>
             <p>Daha fazla video yükleniyor...</p>
         </div>
+        
+        <!-- Privacy notice -->
+        <div class="privacy-notice">
+            <p>Bu site kişisel verileri toplamaz, kullanıcıları takip etmez veya analitik hizmetler kullanmaz. Dil tercihi, sadece dili manuel olarak değiştirmeniz durumunda tarayıcınızın localStorage'ında saklanır.</p>
+        </div>
     </div>
 
     <!-- Modal -->
@@ -83,7 +93,7 @@
 
     <footer class="footer">
         <img src="images/ataturk-signature.png" alt="Atatürk İmzası" class="signature">
-        <a href="https://boykotyap.com" class="boycott-link" target="_blank" rel="noopener noreferrer">Boykota destek ver!</a>
+        <a href="https://boykotyap.net" class="boycott-link" target="_blank" rel="noopener noreferrer">Boykota destek ver!</a>
         <p class="footer-text">© 2025 Zulme Tanık Ol! | Made with ❤️</p>
     </footer>
 
@@ -97,4 +107,5 @@
     <script src="js/video-loader.js"></script>
     <script src="js/ui-interactions.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/language-switcher.js"></script>
 </body>
