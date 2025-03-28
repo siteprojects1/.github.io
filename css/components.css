@@ -437,7 +437,6 @@ header::before {
     text-decoration: none;
     font-weight: bold;
     transition: all 0.2s ease;
-    margin-left: 180px;
     padding: 6px 16px;
     border-radius: 20px;
     background: rgba(231, 76, 60, 0.1);
