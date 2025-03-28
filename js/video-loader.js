@@ -242,12 +242,17 @@ function loadMoreVideos() {
         `;
         videoGrid.appendChild(videoContainer);
         
-        fetch(`https://vimeo.com/api/v2/video/${videoId}.json`)
+        // Updated Vimeo API endpoint with CORS support
+        fetch(`https://api.vimeo.com/videos/${videoId}`, {
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
             .then(response => response.json())
             .then(data => {
-                if (data?.[0]?.thumbnail_large) {
+                if (data?.pictures?.sizes?.[3]?.link) {
                     const thumbnail = videoContainer.querySelector('.video-thumbnail');
-                    thumbnail.style.backgroundImage = `url(${data[0].thumbnail_large})`;
+                    thumbnail.style.backgroundImage = `url(${data.pictures.sizes[3].link})`;
                     thumbnail.classList.add('thumbnail-loaded');
                 }
             })
@@ -319,17 +324,22 @@ function loadFeaturedVideo() {
     videoContainer.appendChild(videoCaption);
     featuredSection.appendChild(videoContainer);
     
-    // Fetch the thumbnail
-    fetch(`https://vimeo.com/api/v2/video/${featuredVideo.id}.json`)
+    // Fetch the thumbnail for featured video
+    fetch(`https://api.vimeo.com/videos/${featuredVideo.id}`, {
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
         .then(response => response.json())
         .then(data => {
-            if (data?.[0]?.thumbnail_large) {
-                videoThumbnail.style.backgroundImage = `url(${data[0].thumbnail_large})`;
+            if (data?.pictures?.sizes?.[3]?.link) {
+                videoThumbnail.style.backgroundImage = `url(${data.pictures.sizes[3].link})`;
                 videoThumbnail.classList.add('thumbnail-loaded');
             }
         })
         .catch(() => videoThumbnail.classList.add('thumbnail-fallback'));
 }
+
 
 // Export functions for use in main.js
 window.loadVideo = loadVideo;
