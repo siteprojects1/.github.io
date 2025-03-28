@@ -11,10 +11,10 @@ function setupScrollButton() {
         const scrollButton = document.getElementById(buttonId);
         if (scrollButton) {
             scrollButton.addEventListener('click', () => {
-                const videoGrid = document.getElementById('video-grid');
-                if (videoGrid) {
+                const featuredSection = document.querySelector('.featured-video-wrapper');
+                if (featuredSection) {
                     // Use a smoother scroll with longer duration
-                    smoothScrollTo(videoGrid, 1000);
+                    smoothScrollTo(featuredSection, 1000);
                 }
             });
         }
