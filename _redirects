@@ -1,7 +1,0 @@
-# Geo-location based redirect - Send non-Turkish visitors to English version
-/ /en/ 302! Country=!TR
-
-# Make sure other paths in the English version redirect correctly
-/en/* /:splat 200
-
-# Ensure assets are properly served from both versions
