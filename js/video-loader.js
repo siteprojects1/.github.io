@@ -299,9 +299,6 @@ function loadFeaturedVideo() {
     const videoCaption = document.createElement('div');
     videoCaption.className = 'featured-video-caption';
     
-    // Create a single line with the name as clickable link
-    // Format: "Kemal Aslan'ın kamerasından 23 Mart 2025 Saraçhane..."
-    
     // Add credit with link (only the name part)
     const creditLink = document.createElement('a');
     creditLink.href = featuredVideo.creditLink;
@@ -319,20 +316,22 @@ function loadFeaturedVideo() {
     videoContainer.appendChild(videoCaption);
     featuredSection.appendChild(videoContainer);
     
-    // Fetch the thumbnail for featured video
-    fetch(`https://api.vimeo.com/videos/${featuredVideo.id}`, {
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
+    // Fetch the thumbnail for featured video - using the same API as other videos
+    fetch(`https://vimeo.com/api/v2/video/${featuredVideo.id}.json`)
         .then(response => response.json())
         .then(data => {
-            if (data?.pictures?.sizes?.[3]?.link) {
-                videoThumbnail.style.backgroundImage = `url(${data.pictures.sizes[3].link})`;
+            if (data?.[0]?.thumbnail_large) {
+                videoThumbnail.style.backgroundImage = `url(${data[0].thumbnail_large})`;
                 videoThumbnail.classList.add('thumbnail-loaded');
+            } else {
+                // Fallback in case thumbnail_large is not available
+                videoThumbnail.classList.add('thumbnail-fallback');
             }
         })
-        .catch(() => videoThumbnail.classList.add('thumbnail-fallback'));
+        .catch(error => {
+            console.error('Error loading featured video thumbnail:', error);
+            videoThumbnail.classList.add('thumbnail-fallback');
+        });
 }
 
 
